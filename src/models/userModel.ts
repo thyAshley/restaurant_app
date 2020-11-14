@@ -3,6 +3,8 @@ import {IUser} from '../types/models'
 
 interface IUserDocument extends IUser, Document {}
 
+import bcryptjs from 'bcryptjs';
+
 const userModel = new mongoose.Schema({
   name: {
     type: String,
@@ -10,11 +12,13 @@ const userModel = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 6,
   },
   isOwner: {
     type: Boolean,
@@ -26,4 +30,11 @@ const userModel = new mongoose.Schema({
   }
 })
 
+userModel.pre<IUserDocument>("save", async function(next) {
+  const salt = await bcryptjs.genSalt(10);
+  this.password = await bcryptjs.hash(this.password, salt)
+  next();
+})
+
 export default mongoose.model<IUserDocument>('User', userModel)
+
