@@ -27,8 +27,18 @@ export const login = async (req:Request, res:Response) => {
 // @desc Register New User
 // @route POST /api/v1/register
 // @access Public
-export const register = (req:Request, res:Response) => {
+export const register = async (req:Request, res:Response) => {
   const {name, email, password} = req.body;
-
-  res.json({name, email, password})
+  const registerUser = new User({
+    name,
+    email,
+    password
+  })
+  try {
+    const user = await registerUser.save();
+    return res.json(user)
+  } catch (error) {
+    console.log(error);
+    return res.json(error.message)
+  }
 }
