@@ -1,26 +1,31 @@
 import {Request, Response} from 'express'
+import jwt from 'jsonwebtoken';
 import User from '../models/userModel'
 // @desc Login Existing User
 // @route POST /api/v1/login
 // @access Public
+const generateToken = (id: string) => {
+  return jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: '1d'})
+}
+
+
 export const login = async (req:Request, res:Response) => {
   const {email, password} = req.body;
   const cleanupEmail = email.trim().toLowerCase();
   try {
-    const user = await User.findOne({email: cleanupEmail})
+    const user = await User.findOne({email: cleanupEmail});
     if (user) {
       const result = await user.compare(password, user.password)
-      console.log(result)
-
       if (result) {
+        const token = generateToken(user._id)
         return res.status(200).json({
-          message: 'login successfully'
+          token
         })
       }
     }
     return res.status(401).json({message: 'Invalid email or password, please try again'})
   } catch (error) {
-    return res.json(error)
+    return res.status(401).json(error)
   }
 }
 
@@ -36,9 +41,14 @@ export const register = async (req:Request, res:Response) => {
   })
   try {
     const user = await registerUser.save();
-    return res.json(user)
+    if (user) {
+      const token = generateToken(user._id)
+      return res.status(201).json({
+        token
+      })
+    }
   } catch (error) {
     console.log(error);
-    return res.json(error.message)
+    return res.status(401).json(error.message)
   }
 }
