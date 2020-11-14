@@ -5,19 +5,22 @@ import User from '../models/userModel'
 // @access Public
 export const login = async (req:Request, res:Response) => {
   const {email, password} = req.body;
+  const cleanupEmail = email.trim().toLowerCase();
   try {
-    const user = await User.findOne({email: email})
+    const user = await User.findOne({email: cleanupEmail})
     if (user) {
       const result = await user.compare(password, user.password)
+      console.log(result)
+
       if (result) {
-        res.status(200).json({
+        return res.status(200).json({
           message: 'login successfully'
         })
       }
     }
-    res.status(401).json({message: 'Invalid email or password, please try again'})
+    return res.status(401).json({message: 'Invalid email or password, please try again'})
   } catch (error) {
-    res.json(error)
+    return res.json(error)
   }
 }
 

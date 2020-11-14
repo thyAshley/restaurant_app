@@ -29,16 +29,17 @@ const userModel = new mongoose.Schema({
     default: false
   }
 })
-userModel.method('compare', async function(enteredPassword: string, dbPassword: string) {
-  const result = await bcryptjs.compare(enteredPassword, dbPassword)
-  return result;
+userModel.method('compare', function(enteredPassword: string, dbPassword: string) {
+  return bcryptjs.compare(enteredPassword, dbPassword)
 })
 
 userModel.pre<IUserDocument>("save", async function(next) {
   const salt = await bcryptjs.genSalt(10);
+  this.email = this.email.trim().toLowerCase();
   this.password = await bcryptjs.hash(this.password, salt)
   next();
 })
+
 
 export default mongoose.model<IUserDocument>('User', userModel)
 
