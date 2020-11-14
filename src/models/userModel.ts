@@ -29,6 +29,10 @@ const userModel = new mongoose.Schema({
     default: false
   }
 })
+userModel.method('compare', async function(enteredPassword: string, dbPassword: string) {
+  const result = await bcryptjs.compare(enteredPassword, dbPassword)
+  return result;
+})
 
 userModel.pre<IUserDocument>("save", async function(next) {
   const salt = await bcryptjs.genSalt(10);

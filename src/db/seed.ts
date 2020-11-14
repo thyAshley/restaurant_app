@@ -8,12 +8,12 @@ import connectDb from '../db';
 const userData = [
   {
     name: 'Joe',
-    email: 'Joe@gmail.com',
+    email: 'joe@gmail.com',
     password: bcrypt.hashSync('123123', bcrypt.genSaltSync(10))
   },
   {
     name: 'John',
-    email: 'John@gmail.com',
+    email: 'john@gmail.com',
     password: bcrypt.hashSync('123123', bcrypt.genSaltSync(10))
   },
   {

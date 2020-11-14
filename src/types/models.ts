@@ -4,4 +4,5 @@ export interface IUser {
   password: string;
   isAdmin?: boolean;
   isOwner?: boolean;
+  compare(enteredPassword: string, dbPassword: string): boolean;
 }
