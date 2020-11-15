@@ -1,4 +1,4 @@
-import mongoose, {Document} from 'mongoose';
+import mongoose, {Document, Schema} from 'mongoose';
 import {IUser} from '../types/models'
 
 interface IUserDocument extends IUser, Document {}
@@ -6,6 +6,7 @@ interface IUserDocument extends IUser, Document {}
 import bcryptjs from 'bcryptjs';
 
 const userModel = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   name: {
     type: String,
     required: true

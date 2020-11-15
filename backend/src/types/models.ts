@@ -12,7 +12,7 @@ interface IMenu {
   price: number;
 }
 
-interface IReview {
+export interface IReview {
   restaurantId: string;
   userId: string;
   rating: number;
@@ -23,7 +23,10 @@ export interface IRestaurant {
   name: string;
   address: string;
   cuisine: string;
-  openingHours: Date;
+  openingHours: {
+    startTime: Date;
+    stopTime: Date;
+  };
   rating: number;
   images: string[];
   menu: IMenu[];
@@ -35,7 +38,6 @@ export interface IBooking {
   restaurantId: string;
   userId: string;
   date: Date;
-  time: Date;
   numberOfPax: number;
   hasReview: boolean;
 }
