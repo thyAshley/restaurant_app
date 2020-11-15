@@ -19,12 +19,16 @@ const restaurantSchema = new mongoose.Schema({
   },
   openingHours: {
     startTime: {
-      type: Date,
-      required: true
+      type: Number,
+      required: true,
+      min: 0,
+      max: 24,
     },
     stopTime: {
-      type: Date,
-      required: true
+      type: Number,
+      required: true,
+      min: 0,
+      max: 24,
     }
   },
   rating: {
