@@ -19,6 +19,10 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  time: {
+    type: Date,
+    required: true
+  },
   numberOfPax: {
     type: Number,
     required: true
@@ -27,6 +31,8 @@ const bookingSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
+},{
+  timestamps: true
 })
 
 export default mongoose.model<IBookingDocument>('Booking', bookingSchema)

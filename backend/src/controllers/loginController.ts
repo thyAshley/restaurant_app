@@ -11,8 +11,8 @@ const generateToken = (id: string) => {
 
 export const login = async (req:Request, res:Response) => {
   const {email, password} = req.body;
-  const cleanupEmail = email.trim().toLowerCase();
   try {
+    const cleanupEmail = email.trim().toLowerCase();
     const user = await User.findOne({email: cleanupEmail});
     if (user) {
       const result = await user.compare(password, user.password)

@@ -4,7 +4,7 @@ import {IRestaurant} from '../types/models'
 interface IRestaurantDocument extends IRestaurant, Document {}
 
 const restaurantSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+  _id: {type: mongoose.Schema.Types.ObjectId, auto: true},
   name: {
     type: String,
     required: true
