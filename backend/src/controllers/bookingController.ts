@@ -31,7 +31,7 @@ export const makeBooking = async (req: Request, res: Response, next: NextFunctio
 export const getBookingByUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = res.locals.user._id
     try {
-        const bookings = await Booking.find({userId}).populate('restaurantId', 'name images address cuisine openingHours rating', 'Restaurant');
+        const bookings = await Booking.find({userId}).populate('restaurantId', 'name images address cuisine openingHours rating', 'Restaurant').sort({date: 'asc', time: 'asc'});
         res.status(200).json(bookings)
     } catch (error) {
         res.status(500);
