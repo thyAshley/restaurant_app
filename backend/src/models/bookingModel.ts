@@ -4,7 +4,10 @@ import {IBooking} from '../types/models'
 interface IBookingDocument extends IBooking, Document {}
 
 const bookingSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -20,7 +23,7 @@ const bookingSchema = new mongoose.Schema({
     required: true
   },
   time: {
-    type: Date,
+    type: String,
     required: true
   },
   numberOfPax: {

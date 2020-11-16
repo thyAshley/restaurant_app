@@ -1,10 +1,14 @@
 import express from 'express';
 
 import {authMiddleWare} from '../middleware/authMiddleware'
-import {makeBooking} from '../controllers/bookingController'
+import {makeBooking, getBookingByUser} from '../controllers/bookingController'
 
 const router = express.Router();
 
-router.post('/:restaurantId', authMiddleWare, makeBooking);
+router.route('/:restaurantId')
+.post(authMiddleWare, makeBooking)
+
+router.get('/', authMiddleWare, getBookingByUser);
+
 
 export default router;
