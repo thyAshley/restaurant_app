@@ -19,6 +19,10 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  time: {
+    type: Date,
+    required: true
+  },
   numberOfPax: {
     type: Number,
     required: true
