@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import ErrorMessage from "../components/ErrorMessage";
 import UserInputBox from "../components/UserInputBox";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
@@ -16,6 +17,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,12 +39,17 @@ export default function Login() {
           secret={true}
           setState={setPassword}
         />
-        <TouchableOpacity onPress={() => setLoading(!loading)}>
+        <ErrorMessage error={error} />
+        <TouchableOpacity
+          onPress={() => {
+            setLoading(!loading);
+          }}
+        >
           <UserInputButton
             text="login"
             icon="angle-double-right"
             showSpinner={loading}
-            style={{ marginVertical: 30 }}
+            style={{ marginVertical: 20 }}
           />
         </TouchableOpacity>
 
