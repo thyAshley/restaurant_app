@@ -42,8 +42,18 @@ export default function Login() {
             text="login"
             icon="angle-double-right"
             showSpinner={loading}
+            style={{ marginVertical: 30 }}
           />
         </TouchableOpacity>
+
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <Text style={styles.newAccount}>Don't have an account?</Text>
+        <UserInputButton
+          text="create an account"
+          location="center"
+          color={colorScheme.secondary}
+          style={{ marginVertical: 10 }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -59,6 +69,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colorScheme.background,
     flex: 1,
+  },
+  forgotPassword: {
+    color: colorScheme.secondary,
+    textAlign: "center",
+    textDecorationLine: "underline",
+    marginBottom: 30,
+  },
+  newAccount: {
+    color: colorScheme.textLight,
+    textAlign: "center",
+    margin: 5,
   },
   secondaryContainer: {
     backgroundColor: colorScheme.white,

@@ -4,12 +4,20 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import colorScheme from "../util/color";
 import Spinner from "./Spinner";
-const UserInputButton = ({ text, color, location, icon, showSpinner }) => {
+const UserInputButton = ({
+  text,
+  color,
+  location,
+  icon,
+  showSpinner,
+  style,
+}) => {
   return (
     <View
       style={[
         styles.container,
         { backgroundColor: color || colorScheme.primary },
+        { ...style },
       ]}
     >
       <Text style={[styles.btn, { textAlign: location || "left" }]}>
@@ -38,11 +46,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 15,
     paddingLeft: 30,
+    flex: 1,
     textTransform: "uppercase",
   },
   container: {
     borderRadius: 20,
-    marginVertical: 30,
     flexDirection: "row",
     alignItems: "center",
   },
