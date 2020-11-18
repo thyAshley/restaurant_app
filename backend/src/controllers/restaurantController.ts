@@ -4,8 +4,11 @@ import { nextTick } from 'process';
 import Restaurant from '../models/restaurantModel';
 
 export const getRestaurant = async (req:Request, res:Response) => {
+    let {limit} = req.query;
+    limit = limit || '20';
+
     try {
-        const restaurants = await Restaurant.find();
+        const restaurants = await Restaurant.find().limit(+limit).sort({createdAt: 'desc'});
         res.send(restaurants);
         
     } catch (error) {

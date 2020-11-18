@@ -17,21 +17,21 @@ export const addReview = async (req:Request, res:Response) => {
     try {
         const bookingDetail = await Booking.findById(req.params.bookingId)
         if (bookingDetail && bookingDetail.userId.toString() === res.locals.user._id.toString()) {
-            const {rating, comment} = req.body;
+            let {rating, comment} = req.body;
+            const userReview = new Review({
+                restaurantId: bookingDetail.restaurantId,
+                userId: res.locals.user._id,
+                bookingId: bookingDetail._id,
+                rating: rating || 0,
+                comment: comment || null
+            })
             if (!bookingDetail.hasReview) {
-                const userReview = new Review({
-                    restaurantId: bookingDetail.restaurantId,
-                    userId: res.locals.user._id,
-                    bookingId: bookingDetail._id,
-                    rating,
-                    comment: comment || null
-                })
                 const result = await userReview.save();
                 bookingDetail.hasReview = true;
                 await bookingDetail.save();
                 return res.send(result)
             } else {
-                await Review.updateOne({bookingId: bookingDetail._id}, {rating, comment});
+                await Review.updateOne({bookingId: bookingDetail._id}, {rating: rating || 0, comment: comment || null});
                 return res.send('updated review')
             }
         }

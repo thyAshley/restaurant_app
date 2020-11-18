@@ -23,6 +23,7 @@ export const makeBooking = async (req: Request, res: Response, next: NextFunctio
         const result = await bookingDetail.save();
         return res.status(200).json(result);
     } catch (error) {
+        console.log(error.message)
         return next(new Error('Something went wrong, please try again'))
     }
 

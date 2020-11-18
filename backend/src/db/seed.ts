@@ -39,6 +39,17 @@ const restaurantData = [
       stopTime: 22,
     },
     pax: 5,
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25411',
+    name: 'kfc',
+    address: 'test location 4321 singapore 654321',
+    cuisine: 'fast food',
+    openingHours: {
+      startTime: 0,
+      stopTime: 0,
+    },
+    pax: 20,
   }
 
 ]
