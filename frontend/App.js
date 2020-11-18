@@ -1,12 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View, StatusBar } from "react-native";
+
+import { AuthStackNavigator } from "../frontend/navigator/navigator";
 
 export default function App() {
-  return (
-    <View>
-      <StatusBar />
-      <Text>Test</Text>
-      <Text>Test</Text>
-    </View>
-  );
+  return <AuthStackNavigator />;
 }
