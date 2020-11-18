@@ -4,7 +4,10 @@ import {IReview} from '../types/models'
 interface IReviewDocument extends IReview, Document {}
 
 const reviewSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true
+  },
   restaurantId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Restaurant'
@@ -12,6 +15,10 @@ const reviewSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  bookingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Booking'
   },
   rating: {
     min: 0,
