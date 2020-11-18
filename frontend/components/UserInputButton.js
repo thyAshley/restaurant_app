@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     padding: 15,
-    paddingLeft: 30,
     flex: 1,
     textTransform: "uppercase",
   },

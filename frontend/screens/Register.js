@@ -7,71 +7,94 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-
 import ErrorMessage from "../components/ErrorMessage";
+
 import UserInputBox from "../components/UserInputBox";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
-export default function Login({ navigation }) {
+export default function Register({ navigation }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cfmPassword, setCfmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const clearAll = () => {
+    setName("");
     setEmail("");
     setPassword("");
+    setCfmPassword("");
     setLoading(false);
     setError("");
   };
 
   const submitHandler = () => {
     setLoading(true);
+    setError("");
+    if (cfmPassword !== password) {
+      setError("Entered Password Does Not Match");
+      setLoading(false);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
       <Text style={styles.appTitle}>Rest Assured</Text>
       <View style={styles.secondaryContainer}>
-        <Text style={styles.welcome}>Welcome Back</Text>
+        <Text style={styles.header}>Create your account</Text>
         <UserInputBox
-          placeholder="Enter Email"
+          placeholder="Name"
           icon="user-alt"
-          state={email}
-          setState={setEmail}
+          state={name}
+          setState={setName}
+          colors={colorScheme.secondary}
         />
         <UserInputBox
-          placeholder="Enter Password"
+          placeholder="Email"
+          icon="mail-bulk"
+          state={email}
+          setState={setEmail}
+          colors={colorScheme.secondary}
+        />
+        <UserInputBox
+          placeholder="Password"
           icon="lock"
-          secret={true}
           state={password}
-          secret={true}
           setState={setPassword}
+          colors={colorScheme.secondary}
+          secret={true}
+        />
+        <UserInputBox
+          placeholder="Confirm Password"
+          icon="lock"
+          state={cfmPassword}
+          setState={setCfmPassword}
+          colors={colorScheme.secondary}
+          secret={true}
         />
         <ErrorMessage error={error} />
         <TouchableOpacity onPress={submitHandler}>
           <UserInputButton
-            text="login"
+            text="register"
             icon="angle-double-right"
             showSpinner={loading}
-            style={{ marginVertical: 20 }}
+            style={{ marginBottom: 30, marginTop: 15 }}
+            color={colorScheme.secondary}
           />
         </TouchableOpacity>
-
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-        <Text style={styles.newAccount}>Don't have an account?</Text>
+        <Text style={styles.hasAccount}>Already have an account?</Text>
         <TouchableOpacity
           onPress={() => {
             clearAll();
-            navigation.navigate("register");
+            navigation.navigate("login");
           }}
         >
           <UserInputButton
-            text="create an account"
+            text="sign in"
             location="center"
-            color={colorScheme.secondary}
-            style={{ marginVertical: 10 }}
+            color={colorScheme.primary}
           />
         </TouchableOpacity>
       </View>
@@ -90,13 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.background,
     flex: 1,
   },
-  forgotPassword: {
-    color: colorScheme.secondary,
-    textAlign: "center",
-    textDecorationLine: "underline",
-    marginBottom: 30,
-  },
-  newAccount: {
+  hasAccount: {
     color: colorScheme.textLight,
     textAlign: "center",
     margin: 5,
@@ -108,8 +125,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
-  welcome: {
-    color: colorScheme.primary,
+  header: {
+    color: colorScheme.secondary,
     fontSize: 22,
     marginVertical: 20,
   },
