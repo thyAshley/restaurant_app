@@ -9,6 +9,7 @@ import restaurantRoute from './routes/restaurantRoute';
 import reviewRoute from './routes/reviewRoute';
 import errorMiddleWare from './middleware/errorMiddleware';
 
+
 const app = express();
 app.use(express.json());
 

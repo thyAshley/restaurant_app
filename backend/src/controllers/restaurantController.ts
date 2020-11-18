@@ -1,5 +1,4 @@
 import {NextFunction, Request, Response} from 'express'
-import { nextTick } from 'process';
 
 import Restaurant from '../models/restaurantModel';
 
@@ -46,4 +45,8 @@ export const getRestaurantsByName = async (req:Request, res:Response, next: Next
     } catch (error) {
         console.log(error)
     }
+}
+
+export const addRestaurant = async (req:Request, res:Response, next: NextFunction) => {
+
 }
