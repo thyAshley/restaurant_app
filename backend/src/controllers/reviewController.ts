@@ -32,7 +32,7 @@ export const addReview = async (req:Request, res:Response) => {
                 return res.send(result)
             } else {
                 await Review.updateOne({bookingId: bookingDetail._id}, {rating, comment});
-                return res.send('updated')
+                return res.send('updated review')
             }
         }
         return res.status(500).send('Something went wrong, Please try again')
