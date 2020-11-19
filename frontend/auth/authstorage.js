@@ -19,9 +19,10 @@ const authStorage = {
     }
   },
 
-  getUser() {
-    return jwtDecode(getToken()) || null;
+  async getUser() {
+    const token = await getToken();
+    return jwtDecode(token) || null;
   },
 };
 
-module.exports = { authStorage };
+export default authStorage;

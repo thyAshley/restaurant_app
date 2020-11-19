@@ -14,13 +14,15 @@ import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 import { authStorage } from "../auth/authstorage";
 import AuthContext from "../context/AuthContext";
+import useAuth from "../auth/useAuth";
 
 export default function Login({ navigation }) {
-  const [user, setUser] = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAuth();
 
   const clearAll = () => {
     setEmail("");
@@ -38,7 +40,7 @@ export default function Login({ navigation }) {
         password: password,
       });
       if (result.data) {
-        authStorage.saveToken(result.data.token);
+        login(result.data.token);
       }
     } catch (error) {
       setError(error.response.data.message);

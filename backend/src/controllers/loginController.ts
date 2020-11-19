@@ -14,14 +14,12 @@ export const login = async (req:Request, res:Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({errors:errors.array()[0].msg})
   }
-  console.log(errors.array())
   const {email, password} = req.body;
   try {
     const cleanupEmail = email.trim().toLowerCase();
     const user = await User.findOne({email: cleanupEmail});
     if (user) {
       const result = await user.compare(password, user.password)
-      console.log(result)
       if (result) {
         const token = generateToken(user._id)
         return res.status(200).json({
