@@ -6,7 +6,6 @@ const storage = multer.diskStorage({
       cb(null, 'public/restaurants')
     },
     filename: function (req, file, cb) {
-      console.log(file)
       const ext = file.mimetype.split('/')[1];
       const restaurantId = req.params.restaurantId;
       cb(null, restaurantId + '_' + Date.now() + '.'+ext)

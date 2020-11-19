@@ -39,7 +39,6 @@ router.post('/:restaurantId/upload', uploadMiddleware.array('file', 3), async (r
         res.status(401)
         next(new Error('Restaurant Not Found, Please Try Again'))
     } catch (error) {
-        console.log(error)
         next(new Error('Something went wrong'))
     }
 })
