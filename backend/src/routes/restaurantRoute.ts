@@ -1,4 +1,6 @@
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
 import Restaurant from '../models/restaurantModel'
 import {getRestaurant, getRestaurantById,getRestaurantsByName} from '../controllers/restaurantController'
@@ -28,7 +30,7 @@ router.post('/:restaurantId/upload', uploadMiddleware.array('file', 3), async (r
                 file[2]?.filename || restaurant.images[2],
             ]
             const result = await restaurant.save();
-            res.send(result)
+            return res.send(result)
         }
         res.status(401)
         next(new Error('Restaurant Not Found, Please Try Again'))
