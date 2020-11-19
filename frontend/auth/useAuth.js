@@ -5,7 +5,7 @@ import AuthContext from "../context/AuthContext";
 import authStorage from "./authstorage";
 
 const useAuth = () => {
-  const { setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const login = async (token) => {
     const decoded = await jwtDecode(token);
@@ -13,7 +13,12 @@ const useAuth = () => {
     authStorage.saveToken(token);
   };
 
-  return { login };
+  const logout = () => {
+    setUser(null);
+    authStorage.removeToken();
+  };
+
+  return { login, logout };
 };
 
 export default useAuth;

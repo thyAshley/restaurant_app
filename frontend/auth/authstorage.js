@@ -20,8 +20,12 @@ const authStorage = {
   },
 
   async getUser() {
-    const token = await getToken();
-    return jwtDecode(token) || null;
+    const token = await this.getToken();
+    return token ? jwtDecode(token) : null;
+  },
+
+  async removeToken() {
+    return await SecureStore.deleteItemAsync("token");
   },
 };
 
