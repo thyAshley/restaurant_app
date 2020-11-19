@@ -24,6 +24,10 @@ router.post('/:restaurantId/upload', uploadMiddleware.array('file', 3), async (r
                 const error = new Error('Please upload a file')
                 return next(error)
             }
+            if (file[0] && restaurant.images[0]) fs.unlinkSync(path.join(__dirname, '../../', 'public', 'restaurants', restaurant.images[0]))
+            if (file[1] && restaurant.images[1]) fs.unlinkSync(path.join(__dirname, '../../', 'public', 'restaurants', restaurant.images[1]))
+            if (file[2] && restaurant.images[2]) fs.unlinkSync(path.join(__dirname, '../../', 'public', 'restaurants', restaurant.images[2]))
+            
             restaurant!.images = [
                 file[0]?.filename || restaurant.images[0],
                 file[1]?.filename || restaurant.images[1],
