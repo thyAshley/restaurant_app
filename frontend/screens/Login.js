@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StatusBar,
   StyleSheet,
@@ -7,13 +7,16 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-
+import { instance } from "../config/axios";
 import ErrorMessage from "../components/ErrorMessage";
 import UserInputBox from "../components/UserInputBox";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
+import { authStorage } from "../auth/authstorage";
+import AuthContext from "../context/AuthContext";
 
 export default function Login({ navigation }) {
+  const [user, setUser] = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,8 +29,21 @@ export default function Login({ navigation }) {
     setError("");
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     setLoading(true);
+    setError("");
+    try {
+      const result = await instance.post("/v1/api/login", {
+        email: email,
+        password: password,
+      });
+      if (result.data) {
+        authStorage.saveToken(result.data.token);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+    setLoading(false);
   };
   return (
     <SafeAreaView style={styles.container}>
