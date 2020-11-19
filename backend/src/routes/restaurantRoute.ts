@@ -16,23 +16,26 @@ router.post('/:restaurantId/upload', uploadMiddleware.array('file', 3), async (r
     const restaurantId = req.params.restaurantId; 
     try {
         const restaurant = await Restaurant.findById(restaurantId)
-        console.log(restaurant)
         if (restaurant) {
             const file: any = req.files
             if (!file) {
                 const error = new Error('Please upload a file')
                 return next(error)
             }
-            restaurant!.images[0] = file[0].filename
-            restaurant!.images[1] = file[1].filename
-            restaurant!.images[2] = file[2].filename
+            restaurant!.images = [
+                file[0]?.filename || restaurant.images[0],
+                file[1]?.filename || restaurant.images[1],
+                file[2]?.filename || restaurant.images[2],
+            ]
             const result = await restaurant.save();
-            next()
+            res.send(result)
         }
+        res.status(401)
+        next(new Error('Restaurant Not Found, Please Try Again'))
     } catch (error) {
         console.log(error)
+        next(new Error('Something went wrong'))
     }
-}, (req,res,next) => {
 })
 
 export default router;
