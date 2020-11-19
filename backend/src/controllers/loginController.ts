@@ -1,21 +1,27 @@
-import {Request, Response} from 'express'
+import {NextFunction, Request, Response} from 'express';
+import {validationResult} from 'express-validator';
 import jwt from 'jsonwebtoken';
+
 import User from '../models/userModel'
-// @desc Login Existing User
-// @route POST /api/v1/login
-// @access Public
+
 const generateToken = (id: string) => {
   return jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: '1d'})
 }
 
 
 export const login = async (req:Request, res:Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors:errors.array()[0].msg})
+  }
+  console.log(errors.array())
   const {email, password} = req.body;
   try {
     const cleanupEmail = email.trim().toLowerCase();
     const user = await User.findOne({email: cleanupEmail});
     if (user) {
       const result = await user.compare(password, user.password)
+      console.log(result)
       if (result) {
         const token = generateToken(user._id)
         return res.status(200).json({
@@ -29,10 +35,12 @@ export const login = async (req:Request, res:Response) => {
   }
 }
 
-// @desc Register New User
-// @route POST /api/v1/register
-// @access Public
-export const register = async (req:Request, res:Response) => {
+export const register = async (req:Request, res:Response, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors:errors.array()[0].msg})
+  }
+
   const {name, email, password} = req.body;
   const registerUser = new User({
     name,
@@ -48,7 +56,11 @@ export const register = async (req:Request, res:Response) => {
       })
     }
   } catch (error) {
-    console.log(error);
-    return res.status(401).json(error.message)
+    if (error.keyPattern.email) {
+      res.status(401)
+      return next(new Error('Email Already Exist'))
+    }
+    res.status(401)
+    return next(error)
   }
 }
