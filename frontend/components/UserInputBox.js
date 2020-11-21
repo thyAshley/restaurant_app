@@ -11,6 +11,7 @@ const UserInputBox = ({
   secret = false,
   state,
   setState,
+  keyboard,
 }) => {
   return (
     <View
@@ -34,6 +35,7 @@ const UserInputBox = ({
         secureTextEntry={secret}
         value={state}
         onChangeText={(text) => setState(text)}
+        keyboardType={keyboard}
       />
     </View>
   );

@@ -1,13 +1,34 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Home from "../screens/Home";
+import colorScheme from "../util/color";
+import RestaurantScreen from "../screens/RestaurantScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Restaurant = createStackNavigator();
+
+const RestaurantNavigator = ({}) => {
+  return (
+    <Restaurant.Navigator>
+      <Restaurant.Screen
+        name="home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Restaurant.Screen
+        name="restaurantdetails"
+        component={RestaurantScreen}
+        options={({ route }) => ({ title: route.params.name })}
+      />
+    </Restaurant.Navigator>
+  );
+};
 
 const AuthStackNavigator = () => {
   return (
@@ -20,10 +41,42 @@ const AuthStackNavigator = () => {
 
 const TabStackNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="home" component={Home} />
-      <Tab.Screen name="booking" component={Home} />
-      <Tab.Screen name="account" component={Home} />
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: colorScheme.primary,
+        inactiveTintColor: colorScheme.secondary,
+      }}
+    >
+      <Tab.Screen
+        name="home"
+        component={RestaurantNavigator}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="home" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="booking"
+        component={Home}
+        options={{
+          tabBarLabel: "Booking",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="bookmark" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="account"
+        component={Home}
+        options={{
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="user-alt" size={24} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

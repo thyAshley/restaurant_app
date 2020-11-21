@@ -58,6 +58,7 @@ export default function Login({ navigation }) {
           icon="user-alt"
           state={email}
           setState={setEmail}
+          keyboard="email-address"
         />
         <UserInputBox
           placeholder="Enter Password"
