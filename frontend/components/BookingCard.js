@@ -32,9 +32,19 @@ export default function BookingCard({ type, booking, cancel }) {
       {type === "new" && (
         <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
           <View style={styles.btnContainer}>
-            <Text style={styles.btn}>Cancel</Text>
+            <Text style={styles.newbtn}>Cancel</Text>
           </View>
         </TouchableWithoutFeedback>
+      )}
+      {type === "old" && (
+        <View style={styles.btnContainer}>
+          <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
+            <Text style={styles.reviewbtn}>Review</Text>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
+            <Text style={styles.bookbtn}>Review</Text>
+          </TouchableWithoutFeedback>
+        </View>
       )}
     </View>
   );
@@ -44,12 +54,27 @@ const styles = StyleSheet.create({
   booking: {
     color: colorScheme.textLight,
   },
-  btn: {
+  newbtn: {
     backgroundColor: colorScheme.secondary,
     color: "white",
     textAlign: "center",
     paddingVertical: 5,
     paddingHorizontal: 15,
+  },
+  reviewbtn: {
+    backgroundColor: colorScheme.primary,
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+  },
+  bookbtn: {
+    backgroundColor: colorScheme.secondary,
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginVertical: 2,
   },
   btnContainer: {
     margin: 10,

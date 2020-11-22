@@ -32,7 +32,6 @@ export default function BookingScreen() {
     console.log(id);
   };
 
-  console.log(booking);
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Upcoming Booking</Text>
@@ -41,7 +40,7 @@ export default function BookingScreen() {
         keyExtractor={(booking) => booking._id}
         renderItem={({ item }) => (
           <BookingCard
-            type="new"
+            type="old"
             booking={item}
             cancel={cancelBookingHandler}
           />
