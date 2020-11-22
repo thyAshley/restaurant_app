@@ -19,6 +19,7 @@ export default function SearchBar() {
 
 const styles = StyleSheet.create({
   input: {
+    flex: 1,
     marginHorizontal: 20,
   },
   searchBar: {

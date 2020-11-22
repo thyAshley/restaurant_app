@@ -8,10 +8,12 @@ import Register from "../screens/Register";
 import Home from "../screens/Home";
 import colorScheme from "../util/color";
 import RestaurantScreen from "../screens/RestaurantScreen";
+import BookingScreen from "../screens/BookingScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Restaurant = createStackNavigator();
+const Booking = createStackNavigator();
 
 const RestaurantNavigator = ({}) => {
   return (
@@ -32,10 +34,31 @@ const RestaurantNavigator = ({}) => {
 
 const AuthStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="register" component={Register} />
     </Stack.Navigator>
+  );
+};
+
+const BookingStackNavigator = () => {
+  return (
+    <Booking.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTintColor: colorScheme.white,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: colorScheme.primary,
+        },
+      }}
+    >
+      <Booking.Screen name="My Booking" component={BookingScreen} />
+    </Booking.Navigator>
   );
 };
 
@@ -59,7 +82,7 @@ const TabStackNavigator = () => {
       />
       <Tab.Screen
         name="booking"
-        component={Home}
+        component={BookingStackNavigator}
         options={{
           tabBarLabel: "Booking",
           tabBarIcon: ({ color }) => (

@@ -1,17 +1,22 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import colorScheme from "../util/color";
 import RestaurantCard from "./RestaurantCard";
 
-export default function Card({ title }) {
+export default function Card({ title, restaurant }) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <RestaurantCard rating={3} name="Random Food" />
-        <RestaurantCard rating={5} name="Burgers" />
-      </ScrollView>
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={restaurant}
+        keyExtractor={(restaurant) => restaurant._id}
+        renderItem={({ item }) => {
+          return <RestaurantCard restaurant={item} />;
+        }}
+      />
     </View>
   );
 }

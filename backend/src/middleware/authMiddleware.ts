@@ -18,6 +18,7 @@ export const authMiddleWare = async (req: Request, res:Response, next: NextFunct
         return next(new Error('You are not authorize or something went wrong, please log in again'))
         
     } catch (error) {
+        console.error(error)
        res.status(500);
        next(new Error('Something went wrong, please try again'))
     }

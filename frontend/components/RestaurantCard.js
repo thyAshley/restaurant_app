@@ -11,32 +11,45 @@ import { useNavigation } from "@react-navigation/native";
 import { AirbnbRating } from "react-native-ratings";
 import colorScheme from "../util/color";
 
-export default function RestaurantCard({ rating, name }) {
+export default function RestaurantCard({ restaurant }) {
   const navigation = useNavigation();
+  const imageFile = `https://83dadb7517cc.ngrok.io/restaurants/${restaurant.images[0]}`;
+
   return (
-    <TouchableWithoutFeedback
-      onPress={() => navigation.navigate("restaurantdetails", { name })}
-    >
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require("../assets/adaptive-icon.png")}
-        />
-        <View style={styles.contentContainer}>
-          <View style={styles.content}>
-            <Text style={styles.name}>{name}</Text>
-            <AirbnbRating
-              showRating={false}
-              isDisabled
-              defaultRating={rating}
-              size={10}
-              selectedColor={colorScheme.primary}
+    restaurant && (
+      <TouchableWithoutFeedback
+        onPress={() =>
+          navigation.navigate("restaurantdetails", {
+            name: restaurant.name,
+            restaurant: restaurant,
+          })
+        }
+      >
+        <View style={styles.container}>
+          {restaurant.images[0] && (
+            <Image
+              style={[styles.image]}
+              source={{
+                uri: imageFile,
+              }}
             />
+          )}
+          <View style={styles.contentContainer}>
+            <View style={styles.content}>
+              <Text style={styles.name}>{restaurant.name}</Text>
+              <AirbnbRating
+                showRating={false}
+                isDisabled
+                defaultRating={restaurant.rating}
+                size={10}
+                selectedColor={colorScheme.primary}
+              />
+            </View>
+            <Text>12:00 PM - 10:00 PM</Text>
           </View>
-          <Text>12:00 PM - 10:00 PM</Text>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    )
   );
 }
 
@@ -54,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    resizeMode: "cover",
+    resizeMode: "stretch",
     width: 250,
     height: 200,
   },

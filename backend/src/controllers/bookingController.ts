@@ -35,6 +35,7 @@ export const getBookingByUser = async (req: Request, res: Response, next: NextFu
         const bookings = await Booking.find({userId}).populate('restaurantId', 'name images address cuisine openingHours rating', 'Restaurant').sort({date: 'asc', time: 'asc'});
         res.status(200).json(bookings)
     } catch (error) {
+        console.error(error)
         res.status(500);
         next(new Error('something went wrong, please try again'))
     }
