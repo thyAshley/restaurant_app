@@ -35,9 +35,11 @@ export default function BookingCard({ type, booking, cancel }) {
       )}
       {type === "old" && (
         <View style={styles.btnContainer}>
-          <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
-            <Text style={styles.reviewbtn}>Review</Text>
-          </TouchableWithoutFeedback>
+          {!booking.hasReview && (
+            <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
+              <Text style={styles.reviewbtn}>Review</Text>
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
             <Text style={styles.bookbtn}>Book Again</Text>
           </TouchableWithoutFeedback>

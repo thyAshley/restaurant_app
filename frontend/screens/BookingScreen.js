@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  Alert,
+} from "react-native";
 
 import { instance } from "../config/axios";
 import AuthStorage from "../auth/authstorage";
@@ -27,8 +34,29 @@ export default function BookingScreen() {
     getBooking();
   }, []);
 
-  const cancelBookingHandler = (id) => {
-    console.log(id);
+  const cancelBooking = async (id) => {
+    try {
+      const token = await AuthStorage.getToken();
+      const bookings = await instance.delete(`/v1/api/Booking/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setNewBooking(bookings.data.booking.newbookings);
+      setOldBooking(bookings.data.booking.oldbookings);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  const cancelBookingHandler = async (id) => {
+    Alert.alert(
+      "Cancel Booking",
+      "Are you sure you want to cancel your booking?",
+      [{ text: "Yes", onPress: () => cancelBooking(id) }, { text: "No" }],
+      {
+        cancelable: true,
+      }
+    );
   };
 
   return (
@@ -38,7 +66,7 @@ export default function BookingScreen() {
         {newBooking.map((booking) => {
           return (
             <BookingCard
-              id={booking.id}
+              key={booking._id}
               type="new"
               booking={booking}
               cancel={cancelBookingHandler}
@@ -49,8 +77,8 @@ export default function BookingScreen() {
         {oldBooking.map((booking) => {
           return (
             <BookingCard
-              id={booking.id}
-              type="new"
+              key={booking._id}
+              type="old"
               booking={booking}
               cancel={cancelBookingHandler}
             />

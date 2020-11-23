@@ -42,3 +42,13 @@ export const getBookingByUser = async (req: Request, res: Response, next: NextFu
     }
 }
 
+export const removeBookingById = async (req: Request, res: Response, next: NextFunction) => {
+    const bookingId = req.params.bookingId
+    try {
+        await Booking.findOneAndDelete({_id: bookingId});
+        next();
+    } catch (error) {
+        res.status(500);
+        next(new Error('something went wrong, please try again'))
+    }
+}
