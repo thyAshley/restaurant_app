@@ -62,7 +62,9 @@ export default function BookingScreen() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.text}>Upcoming Booking</Text>
+        <Text style={[styles.text, { marginVertical: 15 }]}>
+          Upcoming Booking
+        </Text>
         {newBooking.map((booking) => {
           return (
             <BookingCard
@@ -73,7 +75,7 @@ export default function BookingScreen() {
             />
           );
         })}
-        <Text style={styles.text}>Past Booking</Text>
+        <Text style={[styles.text, { marginVertical: 15 }]}>Past Booking</Text>
         {oldBooking.map((booking) => {
           return (
             <BookingCard
@@ -91,7 +93,7 @@ export default function BookingScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    marginHorizontal: 15,
   },
   text: {
     color: colorScheme.primary,

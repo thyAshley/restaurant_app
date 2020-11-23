@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.secondary,
     borderRadius: 20,
     color: "white",
+    fontSize: 16,
     textAlign: "center",
     paddingVertical: 5,
-    paddingHorizontal: 15,
+    paddingHorizontal: 25,
   },
   reviewbtn: {
     backgroundColor: colorScheme.primary,
@@ -86,7 +87,10 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colorScheme.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colorScheme.secbackground,
     flexDirection: "row",
+    marginBottom: 2,
   },
   image: {
     height: 100,
