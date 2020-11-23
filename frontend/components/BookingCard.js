@@ -15,14 +15,11 @@ export default function BookingCard({ type, booking, cancel }) {
       <Image
         style={styles.image}
         source={{
-          uri: `https://83dadb7517cc.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
+          uri: `http://3410bc12af32.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
         }}
       />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>
-          {booking.restaurantId.name}
-          <Text style={styles.booking}>(ID: {booking._id})</Text>
-        </Text>
+        <Text style={styles.text}>{booking.restaurantId.name}</Text>
         <Text style={styles.text}>
           Date: {moment(booking.date).format("DD/MM/yyyy")}
         </Text>
@@ -42,7 +39,7 @@ export default function BookingCard({ type, booking, cancel }) {
             <Text style={styles.reviewbtn}>Review</Text>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
-            <Text style={styles.bookbtn}>Review</Text>
+            <Text style={styles.bookbtn}>Book Again</Text>
           </TouchableWithoutFeedback>
         </View>
       )}
@@ -51,11 +48,9 @@ export default function BookingCard({ type, booking, cancel }) {
 }
 
 const styles = StyleSheet.create({
-  booking: {
-    color: colorScheme.textLight,
-  },
   newbtn: {
     backgroundColor: colorScheme.secondary,
+    borderRadius: 20,
     color: "white",
     textAlign: "center",
     paddingVertical: 5,
@@ -63,18 +58,22 @@ const styles = StyleSheet.create({
   },
   reviewbtn: {
     backgroundColor: colorScheme.primary,
+    borderRadius: 20,
     color: "white",
-    textAlign: "center",
+    fontSize: 14,
     paddingVertical: 5,
     paddingHorizontal: 15,
+    textAlign: "center",
   },
   bookbtn: {
     backgroundColor: colorScheme.secondary,
+    borderRadius: 20,
     color: "white",
-    textAlign: "center",
+    fontSize: 14,
+    marginVertical: 2,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    marginVertical: 2,
+    textAlign: "center",
   },
   btnContainer: {
     margin: 10,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
 import { instance } from "../config/axios";
 import AuthStorage from "../auth/authstorage";
@@ -7,20 +7,19 @@ import colorScheme from "../util/color";
 import BookingCard from "../components/BookingCard";
 
 export default function BookingScreen() {
-  const [booking, setBooking] = useState([]);
+  const [newBooking, setNewBooking] = useState([]);
+  const [oldBooking, setOldBooking] = useState([]);
   useEffect(() => {
     const getBooking = async () => {
       try {
         const token = await AuthStorage.getToken();
-        const bookings = await instance.get(
-          "https://83dadb7517cc.ngrok.io/v1/api/Booking",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setBooking(bookings.data);
+        const bookings = await instance.get("/v1/api/Booking", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setNewBooking(bookings.data.booking.newbookings);
+        setOldBooking(bookings.data.booking.oldbookings);
       } catch (error) {
         console.error(error.message);
       }
@@ -33,27 +32,37 @@ export default function BookingScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Upcoming Booking</Text>
-      <FlatList
-        data={booking}
-        keyExtractor={(booking) => booking._id}
-        renderItem={({ item }) => (
-          <BookingCard
-            type="old"
-            booking={item}
-            cancel={cancelBookingHandler}
-          />
-        )}
-      />
-      <Text style={styles.text}>Past Booking</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.text}>Upcoming Booking</Text>
+        {newBooking.map((booking) => {
+          return (
+            <BookingCard
+              id={booking.id}
+              type="new"
+              booking={booking}
+              cancel={cancelBookingHandler}
+            />
+          );
+        })}
+        <Text style={styles.text}>Past Booking</Text>
+        {oldBooking.map((booking) => {
+          return (
+            <BookingCard
+              id={booking.id}
+              type="new"
+              booking={booking}
+              cancel={cancelBookingHandler}
+            />
+          );
+        })}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     margin: 15,
   },
   text: {
