@@ -1,6 +1,7 @@
 import User from '../models/userModel'
 import Restaurant from '../models/restaurantModel';
 import Booking from '../models/bookingModel';
+import Review from '../models/reviewModel';
 import * as dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 dotenv.config();
@@ -79,7 +80,7 @@ const bookingData = [
     restaurantId: '5fb0bcd8d354365c58e25410',
     date: "2020-11-28",
     time: 17,
-    numberOfPax: 2
+    numberOfPax: 2,
   },
   {
     _id: '5fb0bcd8d354365c58e25431',
@@ -95,7 +96,8 @@ const bookingData = [
     restaurantId: '5fb0bcd8d354365c58e25411',
     date: "2020-11-24",
     time: 12,
-    numberOfPax: 3
+    numberOfPax: 3,
+    hasReview: true
   },
   {
     _id: '5fb0bcd8d354365c58e25433',
@@ -103,7 +105,18 @@ const bookingData = [
     restaurantId: '5fb0bcd8d354365c58e25412',
     date: "2020-11-22",
     time: 18,
-    numberOfPax: 3
+    numberOfPax: 3,
+  },
+]
+
+const reviewData = [
+  {
+    _id: '5fb0bcd8d354365c58e25440',
+    bookingId: '5fb0bcd8d354365c58e25432',
+    userId: '5fb0bcd8d354365c58e25420',
+    restaurantId: '5fb0bcd8d354365c58e25411',
+    rating: 3,
+    comment: 'zai'
   },
 ]
 const seedUser = async () => {
@@ -121,6 +134,10 @@ const seedUser = async () => {
     await Booking.deleteMany({});
     console.log('adding new bookings');
     await Booking.insertMany(bookingData);
+    console.log('deleting existing reviews')
+    await Review.deleteMany({});
+    console.log('adding new reviews');
+    await Review.insertMany(reviewData);
     console.log('seeding completed, process exiting')
   } catch (error) {
     console.log(error)
