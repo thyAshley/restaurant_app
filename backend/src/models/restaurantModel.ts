@@ -31,12 +31,18 @@ const restaurantSchema = new mongoose.Schema({
       max: 24,
     }
   },
-  rating: {
+  review:{
+    rating: {
     type: Number,
     default: 0,
     min: 0,
     max: 5,
-  },
+    },
+    count: {
+      type: Number,
+      default: 0,
+    }
+  } ,
   images: {
     type: []
   },
@@ -53,12 +59,7 @@ const restaurantSchema = new mongoose.Schema({
   pax: {
     type: Number,
     required: true
-  },
-  reviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Review'
   }
-  ]
 }, {
   timestamps: true
 })

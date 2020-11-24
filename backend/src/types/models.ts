@@ -27,11 +27,13 @@ export interface IRestaurant {
     startTime: Date;
     stopTime: Date;
   };
-  rating: number;
+  review: {
+    rating: number;
+    count: number;
+  };
   images: string[];
   menu: IMenu[];
   pax: number;
-  reviews: IReview[]
 }
 
 export interface IBooking {

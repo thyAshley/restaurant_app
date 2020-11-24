@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
   
 import Review from '../models/reviewModel';
 import Booking from '../models/bookingModel';
+import Restaurant from '../models/restaurantModel';
 
 export const getReviewByRestaurantId = async (req:Request, res: Response) => {
     const restaurantId = req.params.restaurantId;
@@ -16,7 +17,9 @@ export const getReviewByRestaurantId = async (req:Request, res: Response) => {
 export const addReview = async (req:Request, res:Response) => {
     try {
         const bookingDetail = await Booking.findById(req.params.bookingId)
-        if (bookingDetail && bookingDetail.userId.toString() === res.locals.user._id.toString()) {
+        const restaurant = await Restaurant.findById(bookingDetail!.restaurantId)
+        if (restaurant && bookingDetail && bookingDetail.userId.toString() === res.locals.user._id.toString()) {
+
             let {rating, comment} = req.body;
             const userReview = new Review({
                 restaurantId: bookingDetail.restaurantId,
@@ -29,10 +32,11 @@ export const addReview = async (req:Request, res:Response) => {
                 const result = await userReview.save();
                 bookingDetail.hasReview = true;
                 await bookingDetail.save();
+
+                restaurant.review.count += 1;
+                restaurant.review.rating = +((restaurant.review.rating + userReview.rating) / restaurant.review.count).toFixed(2)
+                await restaurant.save();
                 return res.send(result)
-            } else {
-                await Review.updateOne({bookingId: bookingDetail._id}, {rating: rating || 0, comment: comment || null});
-                return res.send('updated review')
             }
         }
         return res.status(500).send('Something went wrong, Please try again')

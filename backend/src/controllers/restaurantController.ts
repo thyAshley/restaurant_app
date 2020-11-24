@@ -19,11 +19,12 @@ export const getRestaurantById = async (req:Request, res:Response, next: NextFun
     const {restaurantId} = req.params
     try {
         const restaurant = await Restaurant.findById(restaurantId);
+
         if (restaurant) {
-            res.send(restaurant);
+            return res.send(restaurant);
         } else {
             res.status(404);
-            next(new Error('No Restaurant Found'))
+            return next(new Error('No Restaurant Found'))
         }
         
     } catch (error) {

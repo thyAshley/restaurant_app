@@ -50,8 +50,18 @@ const restaurantData = [
       stopTime: 0,
     },
     pax: 20,
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25412',
+    name: 'subway',
+    address: 'test location 4321 singapore 654321',
+    cuisine: 'bread',
+    openingHours: {
+      startTime: 12,
+      stopTime: 20,
+    },
+    pax: 10,
   }
-
 ]
 const seedUser = async () => {
   try {
