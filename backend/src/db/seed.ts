@@ -1,5 +1,6 @@
 import User from '../models/userModel'
 import Restaurant from '../models/restaurantModel';
+import Booking from '../models/bookingModel';
 import * as dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 dotenv.config();
@@ -23,6 +24,13 @@ const userData = [
     _id: '5fb0bcd8d354365c58e25422',
     name: 'Admin',
     email: 'admin@test.com',
+    password: bcrypt.hashSync('123123', bcrypt.genSaltSync(10)),
+    isAdmin: true
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25423',
+    name: 'Yu Siang',
+    email: 'yusiang@test.com',
     password: bcrypt.hashSync('123123', bcrypt.genSaltSync(10)),
     isAdmin: true
   }
@@ -63,6 +71,41 @@ const restaurantData = [
     pax: 10,
   }
 ]
+
+const bookingData = [
+  {
+    _id: '5fb0bcd8d354365c58e25430',
+    userId: '5fb0bcd8d354365c58e25420',
+    restaurantId: '5fb0bcd8d354365c58e25410',
+    date: "2020-11-28",
+    time: 17,
+    numberOfPax: 2
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25431',
+    userId: '5fb0bcd8d354365c58e25420',
+    restaurantId: '5fb0bcd8d354365c58e25410',
+    date: "2020-11-27",
+    time: 15,
+    numberOfPax: 5
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25432',
+    userId: '5fb0bcd8d354365c58e25420',
+    restaurantId: '5fb0bcd8d354365c58e25411',
+    date: "2020-11-24",
+    time: 12,
+    numberOfPax: 3
+  },
+  {
+    _id: '5fb0bcd8d354365c58e25433',
+    userId: '5fb0bcd8d354365c58e25423',
+    restaurantId: '5fb0bcd8d354365c58e25412',
+    date: "2020-11-22",
+    time: 18,
+    numberOfPax: 3
+  },
+]
 const seedUser = async () => {
   try {
     await connectDb();
@@ -74,6 +117,10 @@ const seedUser = async () => {
     await Restaurant.deleteMany({});
     console.log('adding new restaurants');
     await Restaurant.insertMany(restaurantData);
+    console.log('deleting existing bookings')
+    await Booking.deleteMany({});
+    console.log('adding new bookings');
+    await Booking.insertMany(bookingData);
     console.log('seeding completed, process exiting')
   } catch (error) {
     console.log(error)
