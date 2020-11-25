@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -15,12 +15,12 @@ const Tab = createBottomTabNavigator();
 const Restaurant = createStackNavigator();
 const Booking = createStackNavigator();
 
-const RestaurantNavigator = ({}) => {
+const RestaurantNavigator = ({ hide }) => {
   return (
     <Restaurant.Navigator>
       <Restaurant.Screen
         name="home"
-        component={Home}
+        children={() => <Home hide={hide} />}
         options={{ headerShown: false }}
       />
       <Restaurant.Screen
@@ -63,6 +63,8 @@ const BookingStackNavigator = () => {
 };
 
 const TabStackNavigator = () => {
+  const [hide, setHide] = useState(false);
+  console.log(hide);
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -72,8 +74,9 @@ const TabStackNavigator = () => {
     >
       <Tab.Screen
         name="home"
-        component={RestaurantNavigator}
+        children={() => <RestaurantNavigator hide={setHide} />}
         options={{
+          tabBarVisible: hide ? false : true,
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="home" size={24} color={color} />

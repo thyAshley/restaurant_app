@@ -15,7 +15,7 @@ export default function BookingCard({ type, booking, cancel }) {
       <Image
         style={styles.image}
         source={{
-          uri: `http://3410bc12af32.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
+          uri: `https://2a7d1824c57a.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
         }}
       />
       <View style={styles.textContainer}>

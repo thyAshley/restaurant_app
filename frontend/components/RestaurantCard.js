@@ -13,8 +13,7 @@ import colorScheme from "../util/color";
 
 export default function RestaurantCard({ restaurant }) {
   const navigation = useNavigation();
-  const imageFile = `http://3410bc12af32.ngrok.io/restaurants/${restaurant.images[0]}`;
-
+  const imageFile = `https://2a7d1824c57a.ngrok.io/restaurants/${restaurant.images[0]}`;
   return (
     restaurant && (
       <TouchableWithoutFeedback
@@ -40,7 +39,7 @@ export default function RestaurantCard({ restaurant }) {
               <AirbnbRating
                 showRating={false}
                 isDisabled
-                defaultRating={restaurant.rating}
+                defaultRating={restaurant.review.rating}
                 size={10}
                 selectedColor={colorScheme.primary}
               />
