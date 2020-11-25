@@ -64,7 +64,6 @@ const BookingStackNavigator = () => {
 
 const TabStackNavigator = () => {
   const [hide, setHide] = useState(false);
-  console.log(hide);
   return (
     <Tab.Navigator
       tabBarOptions={{
