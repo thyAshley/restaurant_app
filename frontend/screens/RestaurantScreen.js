@@ -36,7 +36,7 @@ export default function RestaurantScreen({ details, route }) {
   const makeBooking = async () => {
     try {
       const token = await authStorage.getToken();
-      const bookings = await instance.post(
+      await instance.post(
         `/v1/api/Booking/${restaurant._id}`,
         {
           date: moment(date).format("yyyy-MM-DD"),
