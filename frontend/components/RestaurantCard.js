@@ -21,7 +21,7 @@ export default function RestaurantCard({ restaurant, setBook }) {
           navigation.navigate("restaurantdetails", {
             name: restaurant.name,
             restaurant: restaurant,
-            setBook: setBook,
+            setBook,
           })
         }
       >

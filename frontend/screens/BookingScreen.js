@@ -6,12 +6,16 @@ import {
   FlatList,
   ScrollView,
   Alert,
+  LogBox,
 } from "react-native";
 
 import { instance } from "../config/axios";
 import AuthStorage from "../auth/authstorage";
 import colorScheme from "../util/color";
 import BookingCard from "../components/BookingCard";
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 export default function BookingScreen({ book, setBook }) {
   const [newBooking, setNewBooking] = useState([]);

@@ -16,7 +16,7 @@ import authStorage from "../auth/authstorage";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
-export default function RestaurantScreen({ details, route }) {
+export default function RestaurantScreen({ details, route, navigation }) {
   const { restaurant, setBook } = route.params;
   const [date, setDate] = useState(Date.now());
   const [time, setTime] = useState(Date.now());
@@ -36,7 +36,7 @@ export default function RestaurantScreen({ details, route }) {
   const makeBooking = async () => {
     try {
       const token = await authStorage.getToken();
-      await instance.post(
+      const bookings = await instance.post(
         `/v1/api/Booking/${restaurant._id}`,
         {
           date: moment(date).format("yyyy-MM-DD"),
@@ -50,6 +50,7 @@ export default function RestaurantScreen({ details, route }) {
         }
       );
       setBook(true);
+      navigation.navigate("mybooking");
     } catch (error) {
       console.error(error.message);
     }

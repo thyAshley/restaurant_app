@@ -16,11 +16,14 @@ const Restaurant = createStackNavigator();
 const Booking = createStackNavigator();
 
 const RestaurantNavigator = ({ hide, setBook }) => {
+  const setBookingAlert = () => {
+    return setBook(true);
+  };
   return (
     <Restaurant.Navigator>
       <Restaurant.Screen
         name="home"
-        children={() => <Home hide={hide} setBook={setBook} />}
+        children={() => <Home hide={hide} setBook={setBookingAlert} />}
         options={{ headerShown: false }}
       />
       <Restaurant.Screen
@@ -58,7 +61,7 @@ const BookingStackNavigator = ({ book, setBook }) => {
       }}
     >
       <Booking.Screen
-        name="My Booking"
+        name="mybooking"
         children={() => <BookingScreen book={book} setBook={setBook} />}
       />
     </Booking.Navigator>
