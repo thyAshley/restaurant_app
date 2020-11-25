@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AirbnbRating } from "react-native-ratings";
 import colorScheme from "../util/color";
 
-export default function RestaurantCard({ restaurant }) {
+export default function RestaurantCard({ restaurant, setBook }) {
   const navigation = useNavigation();
   const imageFile = `https://2a7d1824c57a.ngrok.io/restaurants/${restaurant.images[0]}`;
   return (
@@ -21,6 +21,7 @@ export default function RestaurantCard({ restaurant }) {
           navigation.navigate("restaurantdetails", {
             name: restaurant.name,
             restaurant: restaurant,
+            setBook: setBook,
           })
         }
       >

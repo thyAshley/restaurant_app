@@ -9,7 +9,7 @@ import colorScheme from "../util/color";
 import authStorage from "../auth/authstorage";
 import ErrorModal from "../components/ErrorModal";
 
-export default function Home({ hide }) {
+export default function Home({ hide, setBook }) {
   const { login, logout } = useAuth();
   const [newRestaurant, setNewRestaurant] = useState([]);
   const [error, setError] = useState("");
@@ -62,7 +62,11 @@ export default function Home({ hide }) {
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.header}>Hi, Yu Siang</Text>
         <SearchBar />
-        <Card title="New Restaurants" restaurant={newRestaurant} />
+        <Card
+          title="New Restaurants"
+          restaurant={newRestaurant}
+          setBook={setBook}
+        />
         <Card title="Recommended for you" />
         <Button title="logout" onPress={logout} />
       </ScrollView>

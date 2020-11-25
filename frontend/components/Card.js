@@ -4,7 +4,7 @@ import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import colorScheme from "../util/color";
 import RestaurantCard from "./RestaurantCard";
 
-export default function Card({ title, restaurant }) {
+export default function Card({ title, restaurant, setBook }) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
@@ -14,7 +14,7 @@ export default function Card({ title, restaurant }) {
         data={restaurant}
         keyExtractor={(restaurant) => restaurant._id}
         renderItem={({ item }) => {
-          return <RestaurantCard restaurant={item} />;
+          return <RestaurantCard restaurant={item} setBook={setBook} />;
         }}
       />
     </View>

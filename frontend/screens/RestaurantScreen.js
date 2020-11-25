@@ -17,7 +17,7 @@ import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
 export default function RestaurantScreen({ details, route }) {
-  const { restaurant } = route.params;
+  const { restaurant, setBook } = route.params;
   const [date, setDate] = useState(Date.now());
   const [time, setTime] = useState(Date.now());
   const [mode, setMode] = useState("date");
@@ -34,16 +34,13 @@ export default function RestaurantScreen({ details, route }) {
     }
   };
   const makeBooking = async () => {
-    console.log("making booking");
     try {
       const token = await authStorage.getToken();
-      console.log("obtain token");
-      console.log("calling API");
       const bookings = await instance.post(
         `/v1/api/Booking/${restaurant._id}`,
         {
           date: moment(date).format("yyyy-MM-DD"),
-          time: moment(time).format("HH:mm"),
+          time: moment(time).format("HH:mm").toString(),
           numberOfPax: 2,
         },
         {
@@ -52,7 +49,7 @@ export default function RestaurantScreen({ details, route }) {
           },
         }
       );
-      console.log(bookings);
+      setBook(true);
     } catch (error) {
       console.error(error.message);
     }

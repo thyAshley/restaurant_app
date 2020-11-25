@@ -15,12 +15,12 @@ const Tab = createBottomTabNavigator();
 const Restaurant = createStackNavigator();
 const Booking = createStackNavigator();
 
-const RestaurantNavigator = ({ hide }) => {
+const RestaurantNavigator = ({ hide, setBook }) => {
   return (
     <Restaurant.Navigator>
       <Restaurant.Screen
         name="home"
-        children={() => <Home hide={hide} />}
+        children={() => <Home hide={hide} setBook={setBook} />}
         options={{ headerShown: false }}
       />
       <Restaurant.Screen
@@ -45,7 +45,7 @@ const AuthStackNavigator = () => {
   );
 };
 
-const BookingStackNavigator = () => {
+const BookingStackNavigator = ({ book, setBook }) => {
   return (
     <Booking.Navigator
       screenOptions={{
@@ -57,13 +57,17 @@ const BookingStackNavigator = () => {
         },
       }}
     >
-      <Booking.Screen name="My Booking" component={BookingScreen} />
+      <Booking.Screen
+        name="My Booking"
+        children={() => <BookingScreen book={book} setBook={setBook} />}
+      />
     </Booking.Navigator>
   );
 };
 
 const TabStackNavigator = () => {
   const [hide, setHide] = useState(false);
+  const [newBook, setNewBook] = useState(false);
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -73,7 +77,9 @@ const TabStackNavigator = () => {
     >
       <Tab.Screen
         name="home"
-        children={() => <RestaurantNavigator hide={setHide} />}
+        children={() => (
+          <RestaurantNavigator hide={setHide} setBook={setNewBook} />
+        )}
         options={{
           tabBarVisible: hide ? false : true,
           tabBarLabel: "Home",
@@ -84,7 +90,9 @@ const TabStackNavigator = () => {
       />
       <Tab.Screen
         name="booking"
-        component={BookingStackNavigator}
+        children={() => (
+          <BookingStackNavigator setBook={setNewBook} book={newBook} />
+        )}
         options={{
           tabBarLabel: "Booking",
           tabBarIcon: ({ color }) => (

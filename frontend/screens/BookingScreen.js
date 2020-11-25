@@ -13,7 +13,7 @@ import AuthStorage from "../auth/authstorage";
 import colorScheme from "../util/color";
 import BookingCard from "../components/BookingCard";
 
-export default function BookingScreen() {
+export default function BookingScreen({ book, setBook }) {
   const [newBooking, setNewBooking] = useState([]);
   const [oldBooking, setOldBooking] = useState([]);
   useEffect(() => {
@@ -27,12 +27,13 @@ export default function BookingScreen() {
         });
         setNewBooking(bookings.data.booking.newbookings);
         setOldBooking(bookings.data.booking.oldbookings);
+        setBook(false);
       } catch (error) {
         console.error(error.message);
       }
     };
     getBooking();
-  }, []);
+  }, [book]);
 
   const cancelBooking = async (id) => {
     try {
