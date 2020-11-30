@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   ScrollView,
   Alert,
   LogBox,
@@ -13,13 +12,16 @@ import { instance } from "../config/axios";
 import AuthStorage from "../auth/authstorage";
 import colorScheme from "../util/color";
 import BookingCard from "../components/BookingCard";
+import { useRoute } from "@react-navigation/native";
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
 
 export default function BookingScreen({ book, setBook }) {
+  const { render } = useRoute().params || false;
   const [newBooking, setNewBooking] = useState([]);
   const [oldBooking, setOldBooking] = useState([]);
+  console.log(render);
   useEffect(() => {
     const getBooking = async () => {
       try {
@@ -37,7 +39,7 @@ export default function BookingScreen({ book, setBook }) {
       }
     };
     getBooking();
-  }, [book]);
+  }, [book, render]);
 
   const cancelBooking = async (id) => {
     try {

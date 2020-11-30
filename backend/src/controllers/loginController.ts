@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 
 const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, { expiresIn: "10d" });
+  return jwt.sign({ id }, process.env.JWT_SECRET!, { expiresIn: "1d" });
 };
 
 export const login = async (req: Request, res: Response) => {

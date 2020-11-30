@@ -9,6 +9,7 @@ import Home from "../screens/Home";
 import colorScheme from "../util/color";
 import RestaurantScreen from "../screens/RestaurantScreen";
 import BookingScreen from "../screens/BookingScreen";
+import ReviewScreen from "../screens/ReviewScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,6 +64,11 @@ const BookingStackNavigator = ({ book, setBook }) => {
       <Booking.Screen
         name="mybooking"
         children={() => <BookingScreen book={book} setBook={setBook} />}
+      />
+      <Booking.Screen
+        name="reviews"
+        children={() => <ReviewScreen />}
+        options={{ headerTitle: "Reviews" }}
       />
     </Booking.Navigator>
   );

@@ -6,16 +6,19 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import colorScheme from "../util/color";
 import moment from "moment";
 
 export default function BookingCard({ type, booking, cancel }) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Image
         style={styles.image}
         source={{
-          uri: `https://2a7d1824c57a.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
+          uri: `http://d376017dd801.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
         }}
       />
       <View style={styles.textContainer}>
@@ -36,7 +39,13 @@ export default function BookingCard({ type, booking, cancel }) {
       {type === "old" && (
         <View style={styles.btnContainer}>
           {!booking.hasReview && (
-            <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
+            <TouchableWithoutFeedback
+              onPress={() =>
+                navigation.navigate("reviews", {
+                  id: booking._id,
+                })
+              }
+            >
               <Text style={styles.reviewbtn}>Review</Text>
             </TouchableWithoutFeedback>
           )}

@@ -21,7 +21,7 @@ export const makeBooking = async (
       userId: res.locals.user._id,
       restaurantId: restaurant._id,
       date: new Date(date),
-      time: moment.utc(time, "HH").format("HH:mm"),
+      time: moment.utc(time, "HH:mm").format("HH:mm"),
       numberOfPax,
     });
     const result = await bookingDetail.save();

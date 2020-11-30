@@ -13,7 +13,7 @@ import colorScheme from "../util/color";
 
 export default function RestaurantCard({ restaurant, setBook }) {
   const navigation = useNavigation();
-  const imageFile = `https://2a7d1824c57a.ngrok.io/restaurants/${restaurant.images[0]}`;
+  const imageFile = `http://d376017dd801.ngrok.io/restaurants/${restaurant.images[0]}`;
   return (
     restaurant && (
       <TouchableWithoutFeedback
