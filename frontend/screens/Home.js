@@ -60,7 +60,7 @@ export default function Home({ hide, setBook }) {
         <ErrorModal error={error} onClose={onClose} />
       ) : null}
       <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.header}>Hi, Yu Siang</Text>
+        <Text style={styles.header}>Welcome Back,</Text>
         <SearchBar />
         <Card
           title="New Restaurants"

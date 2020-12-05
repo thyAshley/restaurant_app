@@ -21,7 +21,7 @@ export default function BookingScreen({ book, setBook }) {
   const { render } = useRoute().params || false;
   const [newBooking, setNewBooking] = useState([]);
   const [oldBooking, setOldBooking] = useState([]);
-  console.log(render);
+
   useEffect(() => {
     const getBooking = async () => {
       try {

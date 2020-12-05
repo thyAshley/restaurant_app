@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import User from "../models/userModel";
+import Restaurant from "../models/restaurantModel";
 
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET!, { expiresIn: "1d" });
@@ -63,6 +64,62 @@ export const register = async (
       res.status(401);
       return next(new Error("Email Already Exist"));
     }
+    res.status(401);
+    return next(error);
+  }
+};
+
+export const registerOwner = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array()[0].msg });
+  }
+  const {
+    name,
+    email,
+    password,
+    restaurantName,
+    location,
+    cuisine,
+    capacity,
+    startTime,
+    stopTime,
+    ambience,
+  } = req.body;
+
+  // const registerUser = new User({
+  //   name,
+  //   email,
+  //   password,
+  // });
+
+  const registerRestaurant = new Restaurant({
+    name: restaurantName,
+    address: location,
+    cuisine,
+    openingHours: {
+      startTime,
+      stopTime,
+    },
+    ambience,
+    pax: capacity,
+  });
+
+  try {
+    // const user = await registerUser.save();
+    await registerRestaurant.save();
+    // if (user) {
+    //   const token = generateToken(user._id);
+    //   return res.status(201).json({
+    //     token,
+    //   });
+    // }
+    res.send("successful");
+  } catch (error) {
     res.status(401);
     return next(error);
   }

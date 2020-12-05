@@ -10,6 +10,8 @@ import colorScheme from "../util/color";
 import RestaurantScreen from "../screens/RestaurantScreen";
 import BookingScreen from "../screens/BookingScreen";
 import ReviewScreen from "../screens/ReviewScreen";
+import RegisterOption from "../screens/RegisterOption";
+import RestaurantRegister from "../screens/RestaurantRegister";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,7 +46,48 @@ const AuthStackNavigator = () => {
       }}
     >
       <Stack.Screen name="login" component={Login} />
-      <Stack.Screen name="register" component={Register} />
+      <Stack.Screen
+        name="register"
+        component={RegisterOption}
+        options={{
+          headerShown: true,
+          title: "New User Registration",
+          headerTitleAlign: "center",
+          headerTintColor: colorScheme.white,
+          headerStyle: {
+            backgroundColor: colorScheme.primary,
+          },
+          headerLeft: null,
+        }}
+      />
+      <Stack.Screen
+        name="regRest"
+        component={RestaurantRegister}
+        options={{
+          headerShown: true,
+          title: "New Restaurant Registration",
+          headerTitleAlign: "center",
+          headerTintColor: colorScheme.white,
+          headerStyle: {
+            backgroundColor: colorScheme.primary,
+          },
+          headerLeft: null,
+        }}
+      />
+      <Stack.Screen
+        name="registerDiner"
+        component={Register}
+        options={{
+          headerShown: true,
+          title: "New User",
+          headerTitleAlign: "center",
+          headerTintColor: colorScheme.white,
+          headerStyle: {
+            backgroundColor: colorScheme.primary,
+          },
+          headerLeft: null,
+        }}
+      />
     </Stack.Navigator>
   );
 };
