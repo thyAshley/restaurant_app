@@ -1,72 +1,64 @@
 import React, { useState, useContext } from "react";
 import { SafeAreaView, Text, View, StyleSheet, StatusBar } from "react-native";
 
-import useAuth from "../auth/useAuth";
 import AuthContext from "../context/AuthContext";
-import UserInputBox from "../components/UserInputBox";
-import UserInputButton from "../components/UserInputButton";
-import colorScheme from "../util/color";
 
-export default function RestaurantRegister() {
-  const { user, setUser } = useContext(AuthContext);
+import CreateAccount from "../components/CreateAccount";
+import CreateRestaurant from "../components/CreateRestaurant";
+
+export default function RestaurantRegister({ navigation }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const { login } = useAuth();
+  const [restaurant, setRestaurant] = useState("");
+  const [location, setLocation] = useState("");
+  const [cuisine, setCuisine] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [ambience, setAmbience] = useState("");
 
+  const [showRegister, setShowRegister] = useState(true);
+  const [showRestaurantDetails, setShowRestauranDetails] = useState(false);
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar />
-      <Text style={styles.appTitle}>Rest Assured</Text>
-      <View style={styles.secondaryContainer}>
-        <Text style={styles.welcome}>Welcome Back</Text>
-        <UserInputBox
-          placeholder="Enter Email"
-          icon="user-alt"
-          state={email}
-          setState={setEmail}
-          keyboard="email-address"
+    <View style={styles.container}>
+      {showRegister && (
+        <CreateAccount
+          user={name}
+          setUser={setName}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          navigation={navigation}
+          next={setShowRestauranDetails}
+          current={setShowRegister}
         />
-        <UserInputBox
-          placeholder="Enter Password"
-          icon="lock"
-          secret={true}
-          state={password}
-          secret={true}
-          setState={setPassword}
+      )}
+      {showRestaurantDetails && (
+        <CreateRestaurant
+          restaurant={restaurant}
+          setRestaurant={setRestaurant}
+          location={location}
+          setLocation={setLocation}
+          cuisine={cuisine}
+          setCuisine={setCuisine}
+          capacity={capacity}
+          setCapacity={setCapacity}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          ambience={ambience}
+          setAmbience={setAmbience}
         />
-      </View>
-    </SafeAreaView>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  appTitle: {
-    color: colorScheme.primary,
-    fontSize: 26,
-    textAlign: "center",
-    marginVertical: 50,
-  },
   container: {
-    backgroundColor: colorScheme.background,
     flex: 1,
-  },
-  hasAccount: {
-    color: colorScheme.textLight,
-    textAlign: "center",
-    margin: 5,
-  },
-  secondaryContainer: {
-    backgroundColor: colorScheme.white,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    flex: 1,
-    padding: 30,
-  },
-  header: {
-    color: colorScheme.secondary,
-    fontSize: 22,
-    marginVertical: 20,
   },
 });

@@ -12,55 +12,68 @@ import UserInputBox from "../components/UserInputBox";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
-export default function CreateAccount({
-  user,
-  setUser,
-  email,
-  setEmail,
-  password,
-  setPassword,
-  navigation,
-  next,
-  current,
+export default function CreateRestaurant({
+  restaurant,
+  setRestaurant,
+  location,
+  setLocation,
+  cuisine,
+  setCuisine,
+  capacity,
+  setCapacity,
+  startTime,
+  setStartTime,
+  endTime,
+  setEndTime,
+  ambience,
+  setAmbience,
 }) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
       <Text style={styles.appTitle}>Rest Assured</Text>
       <View style={styles.secondaryContainer}>
+        <Text style={{ color: colorScheme.primary }}>
+          Please provide us with your restaurant Details
+        </Text>
         <UserInputBox
-          placeholder="Enter Name"
-          icon="user-alt"
-          state={user}
-          setState={setUser}
+          placeholder="Restaurant Name"
+          state={restaurant}
+          setState={setRestaurant}
           keyboard="email-address"
         />
         <UserInputBox
-          placeholder="Enter Email"
-          icon="user-alt"
-          state={email}
-          setState={setEmail}
+          placeholder="Location"
+          state={location}
+          setState={setLocation}
           keyboard="email-address"
         />
         <UserInputBox
-          placeholder="Enter Password"
-          icon="lock"
-          secret={true}
-          state={password}
-          secret={true}
-          setState={setPassword}
+          placeholder="Cuisine"
+          state={cuisine}
+          setState={setCuisine}
         />
-
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (user && email && password) {
-              current(false);
-              next(true);
-            } else {
-              console.log("nothing");
-            }
-          }}
-        >
+        <UserInputBox
+          placeholder="Capacity"
+          state={capacity}
+          setState={setCapacity}
+        />
+        <UserInputBox
+          placeholder="Start Time"
+          state={startTime}
+          setState={setStartTime}
+        />
+        <UserInputBox
+          placeholder="End Time"
+          state={endTime}
+          setState={setEndTime}
+        />
+        <UserInputBox
+          placeholder="Ambience"
+          state={ambience}
+          setState={setAmbience}
+        />
+        <TouchableWithoutFeedback>
           <View style={styles.btnContainer}>
             <UserInputButton
               text="Next"
@@ -70,19 +83,6 @@ export default function CreateAccount({
             />
           </View>
         </TouchableWithoutFeedback>
-
-        <Text style={styles.hasAccount}>Already have an account?</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("login");
-          }}
-        >
-          <UserInputButton
-            text="sign in"
-            location="center"
-            color={colorScheme.primary}
-          />
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     color: colorScheme.primary,
     fontSize: 26,
     textAlign: "center",
-    marginVertical: 50,
   },
   btnContainer: {
     flex: 1,
