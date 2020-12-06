@@ -5,8 +5,10 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import Restaurant from "../models/restaurantModel";
 
-const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, { expiresIn: "1d" });
+const generateToken = (id: string, isOwner: boolean) => {
+  return jwt.sign({ id, isOwner }, process.env.JWT_SECRET!, {
+    expiresIn: "1d",
+  });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -21,7 +23,7 @@ export const login = async (req: Request, res: Response) => {
     if (user) {
       const result = await user.compare(password, user.password);
       if (result) {
-        const token = generateToken(user._id);
+        const token = generateToken(user._id, user.isOwner);
         return res.status(200).json({
           token,
         });
@@ -57,7 +59,7 @@ export const register = async (
     const user = await registerUser.save();
     console.log(user);
     if (user) {
-      const token = generateToken(user._id);
+      const token = generateToken(user._id, isOwner);
       return res.status(201).json({
         token,
       });

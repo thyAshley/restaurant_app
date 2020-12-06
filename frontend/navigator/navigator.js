@@ -11,12 +11,13 @@ import RestaurantScreen from "../screens/RestaurantScreen";
 import BookingScreen from "../screens/BookingScreen";
 import ReviewScreen from "../screens/ReviewScreen";
 import RegisterOption from "../screens/RegisterOption";
-import RestaurantRegister from "../screens/RestaurantRegister";
+import RestaurantHome from "../screens/RestaurantHome";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Restaurant = createStackNavigator();
 const Booking = createStackNavigator();
+const Owner = createStackNavigator();
 
 const RestaurantNavigator = ({ hide, setBook }) => {
   const setBookingAlert = () => {
@@ -62,7 +63,7 @@ const AuthStackNavigator = () => {
       />
       <Stack.Screen
         name="regRest"
-        component={RestaurantRegister}
+        component={Register}
         options={{
           headerShown: true,
           title: "New Restaurant Registration",
@@ -92,6 +93,22 @@ const AuthStackNavigator = () => {
   );
 };
 
+const OwnerStackNavigator = () => {
+  return (
+    <Owner.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTintColor: colorScheme.white,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: colorScheme.primary,
+        },
+      }}
+    >
+      <Booking.Screen name="ownerHome" children={() => <RestaurantHome />} />
+    </Owner.Navigator>
+  );
+};
 const BookingStackNavigator = ({ book, setBook }) => {
   return (
     <Booking.Navigator
@@ -166,4 +183,4 @@ const TabStackNavigator = () => {
   );
 };
 
-module.exports = { AuthStackNavigator, TabStackNavigator };
+module.exports = { AuthStackNavigator, TabStackNavigator, OwnerStackNavigator };

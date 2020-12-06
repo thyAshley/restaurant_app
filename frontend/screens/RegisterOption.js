@@ -27,7 +27,9 @@ export default function RegisterOption({ navigation }) {
           />
         </View>
       </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("regRest")}>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("regRest", { isOwner: true })}
+      >
         <View style={styles.btnContainer}>
           <UserInputButton
             text="Register As A Business Owner"

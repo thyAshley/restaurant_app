@@ -5,11 +5,14 @@ import AuthContext from "../context/AuthContext";
 import authStorage from "./authstorage";
 
 const useAuth = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, owner, setOwner } = useContext(AuthContext);
 
   const login = async (token) => {
     const decoded = await jwtDecode(token);
+    console.log(decoded.isOwner);
     setUser(decoded.id);
+    setOwner(decoded.isOwner);
+    // console.log("added owner");
     authStorage.saveToken(token);
   };
 
@@ -18,7 +21,7 @@ const useAuth = () => {
     authStorage.removeToken();
   };
 
-  return { login, logout };
+  return { login, logout, owner, setOwner };
 };
 
 export default useAuth;

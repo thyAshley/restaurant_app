@@ -16,7 +16,7 @@ import UserInputButton from "../components/UserInputButton";
 import { instance } from "../config/axios";
 import colorScheme from "../util/color";
 
-export default function Register({ navigation }) {
+export default function Register({ navigation, route }) {
   const { login } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +24,6 @@ export default function Register({ navigation }) {
   const [cfmPassword, setCfmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const clearAll = () => {
     setName("");
     setEmail("");
@@ -42,6 +41,7 @@ export default function Register({ navigation }) {
       setLoading(false);
     }
     try {
+      const isOwner = route.params.isOwner;
       const response = await instance.post("/v1/api/register", {
         name,
         email,
