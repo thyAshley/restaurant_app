@@ -10,10 +10,11 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AirbnbRating } from "react-native-ratings";
 import colorScheme from "../util/color";
+import { urlLink } from "../config/axios";
 
 export default function RestaurantCard({ restaurant, setBook }) {
   const navigation = useNavigation();
-  const imageFile = `http://d376017dd801.ngrok.io/restaurants/${restaurant.images[0]}`;
+  const imageFile = `${urlLink.url}/restaurant/${restaurant.images[0]}`;
   return (
     restaurant && (
       <TouchableWithoutFeedback

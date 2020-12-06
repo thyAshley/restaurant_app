@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { urlLink } from "../config/axios";
 
 import colorScheme from "../util/color";
 import moment from "moment";
@@ -18,7 +19,7 @@ export default function BookingCard({ type, booking, cancel }) {
       <Image
         style={styles.image}
         source={{
-          uri: `http://d376017dd801.ngrok.io/restaurants/${booking.restaurantId.images[0]}`,
+          uri: `${urlLink.url}/restaurant/${booking.restaurantId.images[0]}`,
         }}
       />
       <View style={styles.textContainer}>
@@ -49,9 +50,6 @@ export default function BookingCard({ type, booking, cancel }) {
               <Text style={styles.reviewbtn}>Review</Text>
             </TouchableWithoutFeedback>
           )}
-          <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
-            <Text style={styles.bookbtn}>Book Again</Text>
-          </TouchableWithoutFeedback>
         </View>
       )}
     </View>

@@ -15,6 +15,7 @@ import { instance } from "../config/axios";
 import authStorage from "../auth/authstorage";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
+import { urlLink } from "../config/axios";
 
 export default function RestaurantScreen({ details, route, navigation }) {
   const { restaurant, setBook } = route.params;
@@ -87,7 +88,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
                 <Image
                   style={styles.image}
                   source={{
-                    uri: `https://2a7d1824c57a.ngrok.io/restaurants/${item}`,
+                    uri: `${urlLink.url}/restaurants/${item}`,
                   }}
                 />
               )

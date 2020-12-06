@@ -7,13 +7,17 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import useAuth from "../auth/useAuth";
+
 import ErrorMessage from "../components/ErrorMessage";
 
 import UserInputBox from "../components/UserInputBox";
 import UserInputButton from "../components/UserInputButton";
+import { instance } from "../config/axios";
 import colorScheme from "../util/color";
 
 export default function Register({ navigation }) {
+  const { login } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,13 +34,24 @@ export default function Register({ navigation }) {
     setError("");
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     setLoading(true);
     setError("");
     if (cfmPassword !== password) {
       setError("Entered Password Does Not Match");
       setLoading(false);
     }
+    try {
+      const response = await instance.post("/v1/api/register", {
+        name,
+        email,
+        password,
+      });
+      login(response.data.token);
+    } catch (error) {
+      setError("Please check your inputs");
+    }
+    setLoading(false);
   };
   return (
     <SafeAreaView style={styles.container}>

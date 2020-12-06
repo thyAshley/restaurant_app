@@ -53,19 +53,16 @@ export const register = async (
   });
   try {
     const user = await registerUser.save();
+    console.log(user);
     if (user) {
       const token = generateToken(user._id);
       return res.status(201).json({
         token,
       });
     }
+    return res.status(500).send({ message: "an error has occur" });
   } catch (error) {
-    if (error.keyPattern.email) {
-      res.status(401);
-      return next(new Error("Email Already Exist"));
-    }
-    res.status(401);
-    return next(error);
+    return res.status(500).send({ message: "an error has occur" });
   }
 };
 
