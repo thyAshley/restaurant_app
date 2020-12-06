@@ -16,7 +16,7 @@ const router = express.Router();
 router.route("/").get(getRestaurant).post(createRestaurantByUser);
 
 router.get("/:restaurantId", getRestaurantById);
-router.get("/owner/:userId", getRestaurantById);
+router.get("/owner/:userId", getRestaurantByUser);
 
 router.post(
   "/:restaurantId/upload",
@@ -31,7 +31,7 @@ router.post(
           const error = new Error("Please upload a file");
           return next(error);
         }
-        if (file[0] && restaurant.images[0])
+        if (file[0] && restaurant && restaurant.images && restaurant.images[0])
           fs.unlinkSync(
             path.join(
               __dirname,
@@ -41,7 +41,7 @@ router.post(
               restaurant.images[0]
             )
           );
-        if (file[1] && restaurant.images[1])
+        if (file[1] && restaurant && restaurant.images && restaurant.images[1])
           fs.unlinkSync(
             path.join(
               __dirname,
@@ -51,7 +51,7 @@ router.post(
               restaurant.images[1]
             )
           );
-        if (file[2] && restaurant.images[2])
+        if (file[2] && restaurant && restaurant.images && restaurant.images[2])
           fs.unlinkSync(
             path.join(
               __dirname,
@@ -63,9 +63,12 @@ router.post(
           );
 
         restaurant!.images = [
-          file[0]?.filename || restaurant.images[0],
-          file[1]?.filename || restaurant.images[1],
-          file[2]?.filename || restaurant.images[2],
+          file[0]?.filename ||
+            (restaurant.images ? restaurant.images[0] : null),
+          file[1]?.filename ||
+            (restaurant.images ? restaurant.images[1] : null),
+          file[2]?.filename ||
+            (restaurant.images ? restaurant.images[2] : null),
         ];
         const result = await restaurant.save();
         return res.send(result);

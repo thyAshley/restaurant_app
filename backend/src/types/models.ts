@@ -28,11 +28,11 @@ export interface IRestaurant {
     startTime: Date;
     stopTime: Date;
   };
-  review: {
+  review?: {
     rating: number;
     count: number;
   };
-  images: string[];
+  images?: string[];
   menu: IMenu[];
   ambience: boolean;
   pax: number;
