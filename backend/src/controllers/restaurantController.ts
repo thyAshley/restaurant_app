@@ -1,6 +1,60 @@
 import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import Restaurant from "../models/restaurantModel";
+import User from "../models/userModel";
+
+export const getRestaurantByUser = async (req: Request, res: Response) => {
+  const { owner } = req.params;
+  await Restaurant.find({ owner });
+};
+
+export const createRestaurantByUser = async (req: Request, res: Response) => {
+  const {
+    name,
+    location,
+    cuisine,
+    capacity,
+    openingHours,
+    ambience,
+    menu,
+  } = req.body;
+  if (
+    !name ||
+    !location ||
+    cuisine ||
+    capacity ||
+    openingHours ||
+    ambience ||
+    ambience ||
+    menu
+  ) {
+    return res.status(400).send({ message: "Not filled in" });
+  }
+  try {
+    const token = req.headers?.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(400).send({ message: "Unauthorized" });
+    }
+    const result: any = await jwt.verify(token, process.env.JWT_SECRET!);
+    const response = new Restaurant({
+      name: name,
+      address: location,
+      cuisine: cuisine,
+      pax: capacity,
+      openingHours: openingHours,
+      ambience: ambience,
+      menu: menu,
+      owner: result.id,
+    });
+    await response.save();
+  } catch (error) {
+    if (error.message === "jwt malformed") {
+      return res.status(404).send({ message: "Unauthorized" });
+    }
+    res.status(500).send({ message: "Unexpected error occur" });
+  }
+};
 
 export const getRestaurant = async (req: Request, res: Response) => {
   let { limit } = req.query;
@@ -37,23 +91,23 @@ export const getRestaurantById = async (
   }
 };
 
-export const getRestaurantsByName = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { name } = req.body;
-  try {
-    const restaurant = await Restaurant.find({
-      name: { $regex: name, $options: "i" },
-    });
-    if (restaurant) {
-      res.send(restaurant);
-    } else {
-      res.status(404);
-      next(new Error("No Restaurant Found"));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const getRestaurantsByName = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { name } = req.body;
+//   try {
+//     const restaurant = await Restaurant.find({
+//       name: { $regex: name, $options: "i" },
+//     });
+//     if (restaurant) {
+//       res.send(restaurant);
+//     } else {
+//       res.status(404);
+//       next(new Error("No Restaurant Found"));
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

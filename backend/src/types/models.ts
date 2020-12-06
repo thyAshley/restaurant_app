@@ -21,6 +21,7 @@ export interface IReview {
 }
 export interface IRestaurant {
   name: string;
+  owner: string;
   address: string;
   cuisine: string;
   openingHours: {
@@ -33,6 +34,7 @@ export interface IRestaurant {
   };
   images: string[];
   menu: IMenu[];
+  ambience: boolean;
   pax: number;
 }
 
