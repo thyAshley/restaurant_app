@@ -12,6 +12,7 @@ import ErrorModal from "../components/ErrorModal";
 export default function Home({ hide, setBook }) {
   const { login, logout } = useAuth();
   const [newRestaurant, setNewRestaurant] = useState([]);
+  const [recommendationRestaurant, setRecommendation] = useState([]);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
 
@@ -38,7 +39,9 @@ export default function Home({ hide, setBook }) {
     const fetchRestaurant = async () => {
       try {
         const restaurant = await instance.get("/v1/api/restaurant?limit=5");
+        const recommended = await instance.get("/v1/api/restaurant?limit=5");
         setNewRestaurant(restaurant.data);
+        setRecommendation(recommended.data);
       } catch (err) {
         console.error(err);
         setError(err);
@@ -67,7 +70,11 @@ export default function Home({ hide, setBook }) {
           restaurant={newRestaurant}
           setBook={setBook}
         />
-        <Card title="Recommended for you" />
+        <Card
+          title="Recommended for you"
+          restaurant={recommendationRestaurant}
+          setBook={setBook}
+        />
         <Button title="logout" onPress={logout} />
       </ScrollView>
     </View>

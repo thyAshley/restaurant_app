@@ -45,11 +45,13 @@ export const register = async (
     return res.status(400).json({ errors: errors.array()[0].msg });
   }
 
-  const { name, email, password } = req.body;
+  let { name, email, password, isOwner } = req.body;
+  if (!isOwner) isOwner = false;
   const registerUser = new User({
     name,
     email,
     password,
+    isOwner,
   });
   try {
     const user = await registerUser.save();

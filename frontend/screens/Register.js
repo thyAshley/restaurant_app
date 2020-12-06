@@ -46,6 +46,7 @@ export default function Register({ navigation }) {
         name,
         email,
         password,
+        isOwner,
       });
       login(response.data.token);
     } catch (error) {
