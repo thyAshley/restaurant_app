@@ -212,7 +212,7 @@ export default function NewRestaurant() {
           </Text>
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Ambience Layout</Text>
-            <Imagelist />
+            <Imagelist ambience />
           </View>
           <View style={{ width: "80%", flexDirection: "row" }}>
             <TouchableWithoutFeedback onPress={() => setPage(1)}>
@@ -252,8 +252,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 25,
     flexDirection: "row",
-    margin: 20,
-    padding: 20,
+    margin: 5,
+    padding: 5,
+    width: "100%",
   },
   inputContainer: {
     backgroundColor: colorScheme.background,
