@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import UserInputBox from "../components/UserInputBox";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import { TextInput, ScrollView } from "react-native-gesture-handler";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
@@ -76,18 +75,98 @@ export default function NewRestaurant() {
               </Text>
             </View>
           </View>
-          <View style={{ width: "80%" }}>
-            <UserInputButton
-              color={colorScheme.secondary}
-              location="center"
-              text="Next"
-            />
-          </View>
+          <TouchableWithoutFeedback onPress={() => setPage(1)}>
+            <View style={{ width: "80%" }}>
+              <UserInputButton
+                color={colorScheme.secondary}
+                location="center"
+                text="Next"
+              />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       )}
       {page === 1 && (
-        <View>
-          <Text>Hey</Text>
+        <View style={styles.container}>
+          <Text style={styles.input}>
+            Please provide us with the highlights of your restaurant menu
+          </Text>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={[styles.inputContainer, { paddingVertical: 20 }]}
+          >
+            <View>
+              <View>
+                <Text style={styles.inputText}>MENU LISTING 1</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+              <View>
+                <Text style={styles.inputText}>ITEM PRICING</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.inputText}>MENU LISTING 2</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+              <View>
+                <Text style={styles.inputText}>ITEM PRICING</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+            </View>
+            <View>
+              <View>
+                <Text style={styles.inputText}>MENU LISTING 3</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+              <View>
+                <Text style={styles.inputText}>ITEM PRICING</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+            </View>
+            <View>
+              <View>
+                <Text style={styles.inputText}>MENU LISTING 4</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+              <View>
+                <Text style={styles.inputText}>ITEM PRICING</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+            </View>
+            <View style={{ marginBottom: 40 }}>
+              <View>
+                <Text style={styles.inputText}>MENU LISTING 5</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+              <View>
+                <Text style={styles.inputText}>ITEM PRICING</Text>
+                <TextInput style={styles.inputField} />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={{ width: "80%", flexDirection: "row" }}>
+            <TouchableWithoutFeedback onPress={() => setPage(0)}>
+              <View style={{ flexGrow: 1, marginRight: 5 }}>
+                <UserInputButton
+                  color={colorScheme.primary}
+                  location="center"
+                  text="back"
+                />
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback>
+              <View style={{ flexGrow: 1, marginLeft: 5 }}>
+                <UserInputButton
+                  color={colorScheme.secondary}
+                  location="center"
+                  text="Next"
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       )}
     </>
