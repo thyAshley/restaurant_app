@@ -24,12 +24,12 @@ export default function Login({ navigation }) {
   const [error, setError] = useState("");
   const { login } = useAuth();
 
-  const clearAll = () => {
-    setEmail("");
-    setPassword("");
-    setLoading(false);
-    setError("");
-  };
+  // const clearAll = async () => {
+  //   setEmail("");
+  //   setPassword("");
+  //   setLoading(false);
+  //   setError("");
+  // };
 
   const submitHandler = async () => {
     setLoading(true);
@@ -40,12 +40,13 @@ export default function Login({ navigation }) {
         password: password,
       });
       if (result.data) {
-        login(result.data.token);
+        await login(result.data.token);
+        setLoading(false);
       }
     } catch (error) {
-      setError(error.response.data.message);
+      setError("failed to login");
+      setLoading(false);
     }
-    setLoading(false);
   };
   return (
     <SafeAreaView style={styles.container}>

@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Spinner from "../components/Spinner";
+import { instance } from "../config/axios";
+import AuthContext from "../context/AuthContext";
 
-export default function RestaurantHome() {
+export default function RestaurantHome({ navigation }) {
+  const { user, setRestaurant, restaurant } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getRestaurant = async () => {
+      const response = await instance.get(`/v1/api/restaurant/owner/${user}`);
+      setRestaurant(response.data);
+    };
+    getRestaurant();
+  }, []);
+
+  useEffect(() => {
+    if (!restaurant) navigation.navigate("reg");
+    setLoading(false);
+  }, [restaurant]);
+
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: "center" }}>
+      {loading && (
+        <Spinner style={{ color: "black" }} color="black" size={80} />
+      )}
       <Text>Home</Text>
     </View>
   );

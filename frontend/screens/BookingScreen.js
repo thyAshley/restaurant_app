@@ -1,21 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Alert,
-  LogBox,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, Alert } from "react-native";
 
 import { instance } from "../config/axios";
 import AuthStorage from "../auth/authstorage";
 import colorScheme from "../util/color";
 import BookingCard from "../components/BookingCard";
 import { useRoute } from "@react-navigation/native";
-LogBox.ignoreLogs([
-  "Non-serializable values were found in the navigation state",
-]);
 
 export default function BookingScreen({ book, setBook }) {
   const { render } = useRoute().params || false;

@@ -9,16 +9,14 @@ const useAuth = () => {
 
   const login = async (token) => {
     const decoded = await jwtDecode(token);
-    console.log(decoded.isOwner);
-    setUser(decoded.id);
+    await authStorage.saveToken(token);
     setOwner(decoded.isOwner);
-    // console.log("added owner");
-    authStorage.saveToken(token);
+    setUser(decoded.id);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
-    authStorage.removeToken();
+    await authStorage.removeToken();
   };
 
   return { login, logout, owner, setOwner };

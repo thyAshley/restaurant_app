@@ -12,14 +12,16 @@ import BookingScreen from "../screens/BookingScreen";
 import ReviewScreen from "../screens/ReviewScreen";
 import RegisterOption from "../screens/RegisterOption";
 import RestaurantHome from "../screens/RestaurantHome";
+import NewRestaurant from "../screens/NewRestaurant";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Owner = createBottomTabNavigator();
 const Restaurant = createStackNavigator();
+const OwnerReg = createStackNavigator();
 const Booking = createStackNavigator();
-const Owner = createStackNavigator();
 
-const RestaurantNavigator = ({ hide, setBook }) => {
+export const RestaurantNavigator = ({ hide, setBook }) => {
   const setBookingAlert = () => {
     return setBook(true);
   };
@@ -39,7 +41,7 @@ const RestaurantNavigator = ({ hide, setBook }) => {
   );
 };
 
-const AuthStackNavigator = () => {
+export const AuthStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -93,7 +95,31 @@ const AuthStackNavigator = () => {
   );
 };
 
-const OwnerStackNavigator = () => {
+export const OwnerRegisterStack = () => {
+  return (
+    <OwnerReg.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTintColor: colorScheme.white,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: colorScheme.primary,
+        },
+      }}
+    >
+      <OwnerReg.Screen name="homeStack" component={OwnerStackNavigator} />
+      <OwnerReg.Screen
+        name="reg"
+        component={NewRestaurant}
+        options={{
+          headerLeft: null,
+        }}
+      />
+    </OwnerReg.Navigator>
+  );
+};
+
+export const OwnerStackNavigator = () => {
   return (
     <Owner.Navigator
       screenOptions={{
@@ -105,11 +131,12 @@ const OwnerStackNavigator = () => {
         },
       }}
     >
-      <Booking.Screen name="ownerHome" children={() => <RestaurantHome />} />
+      <Booking.Screen name="home" component={RestaurantHome} />
+      <Booking.Screen name="account" component={RestaurantHome} />
     </Owner.Navigator>
   );
 };
-const BookingStackNavigator = ({ book, setBook }) => {
+export const BookingStackNavigator = ({ book, setBook }) => {
   return (
     <Booking.Navigator
       screenOptions={{
@@ -134,7 +161,7 @@ const BookingStackNavigator = ({ book, setBook }) => {
   );
 };
 
-const TabStackNavigator = () => {
+export const TabStackNavigator = () => {
   const [hide, setHide] = useState(false);
   const [newBook, setNewBook] = useState(false);
   return (
@@ -182,5 +209,3 @@ const TabStackNavigator = () => {
     </Tab.Navigator>
   );
 };
-
-module.exports = { AuthStackNavigator, TabStackNavigator, OwnerStackNavigator };
