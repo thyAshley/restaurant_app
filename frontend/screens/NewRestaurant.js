@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { TextInput, ScrollView } from "react-native-gesture-handler";
+import { add } from "react-native-reanimated";
 import UserInputButton from "../components/UserInputButton";
 import colorScheme from "../util/color";
 
 export default function NewRestaurant() {
   const [page, setPage] = useState(1);
+  const [addMore, setAddMore] = useState(false);
   return (
     <>
       {page === 0 && (
@@ -126,26 +128,48 @@ export default function NewRestaurant() {
                 <TextInput style={styles.inputField} />
               </View>
             </View>
-            <View>
-              <View>
-                <Text style={styles.inputText}>MENU LISTING 4</Text>
-                <TextInput style={styles.inputField} />
-              </View>
-              <View>
-                <Text style={styles.inputText}>ITEM PRICING</Text>
-                <TextInput style={styles.inputField} />
-              </View>
-            </View>
-            <View style={{ marginBottom: 40 }}>
-              <View>
-                <Text style={styles.inputText}>MENU LISTING 5</Text>
-                <TextInput style={styles.inputField} />
-              </View>
-              <View>
-                <Text style={styles.inputText}>ITEM PRICING</Text>
-                <TextInput style={styles.inputField} />
-              </View>
-            </View>
+            {!addMore && (
+              <TouchableWithoutFeedback onPress={() => setAddMore(true)}>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "flex-end",
+                    width: "90%",
+                    margin: 10,
+                  }}
+                >
+                  <Text
+                    style={{ color: colorScheme.secondary, fontWeight: "bold" }}
+                  >
+                    Add More...
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
+            {addMore && (
+              <>
+                <View>
+                  <View>
+                    <Text style={styles.inputText}>MENU LISTING 4</Text>
+                    <TextInput style={styles.inputField} />
+                  </View>
+                  <View>
+                    <Text style={styles.inputText}>ITEM PRICING</Text>
+                    <TextInput style={styles.inputField} />
+                  </View>
+                </View>
+                <View style={{ marginBottom: 40 }}>
+                  <View>
+                    <Text style={styles.inputText}>MENU LISTING 5</Text>
+                    <TextInput style={styles.inputField} />
+                  </View>
+                  <View>
+                    <Text style={styles.inputText}>ITEM PRICING</Text>
+                    <TextInput style={styles.inputField} />
+                  </View>
+                </View>
+              </>
+            )}
           </ScrollView>
           <View style={{ width: "80%", flexDirection: "row" }}>
             <TouchableWithoutFeedback onPress={() => setPage(0)}>
@@ -157,7 +181,7 @@ export default function NewRestaurant() {
                 />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => setPage(2)}>
               <View style={{ flexGrow: 1, marginLeft: 5 }}>
                 <UserInputButton
                   color={colorScheme.secondary}
@@ -169,6 +193,7 @@ export default function NewRestaurant() {
           </View>
         </View>
       )}
+      {page === 2 && <View style={styles.container}></View>}
     </>
   );
 }
