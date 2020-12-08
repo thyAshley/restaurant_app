@@ -148,7 +148,6 @@ export default function RegisterRestarant({ page, setPage }) {
         }
       );
       if (response.data.message === "success") {
-        console.log(response.data.message);
         setPage(2);
       }
     } catch (error) {

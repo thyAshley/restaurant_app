@@ -10,7 +10,7 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colorScheme from "../util/color";
 
-export default function Imagelist({ ambience }) {
+export default function Imagelist({ ambience, setImageUri, imageUri }) {
   const [imagePermission, setImagePermission] = useState(false);
   const [image, setImage] = useState(null);
   useEffect(() => {

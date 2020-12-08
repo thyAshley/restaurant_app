@@ -10,6 +10,8 @@ import colorScheme from "../util/color";
 export default function NewRestaurant() {
   const [page, setPage] = useState(0);
 
+  const [imageUri, setImageUri] = useState([]);
+
   return (
     <>
       <RegisterRestarant page={page} setPage={setPage} />
@@ -20,28 +22,19 @@ export default function NewRestaurant() {
             ambience/food.
           </Text>
           <View style={styles.imageContainer} horizontal>
-            <Imagelist />
-            <Imagelist />
-            <Imagelist />
+            <Imagelist setImageUri={setImageUri} imageUri={imageUri} />
+            <Imagelist setImageUri={setImageUri} imageUri={imageUri} />
+            <Imagelist setImageUri={setImageUri} imageUri={imageUri} />
           </View>
           <Text style={styles.page2Input}>
             Kindly upload a copy of the restaurant layout for diners. Please
             ensure that the layout is clearly labelled for ease of referencing
           </Text>
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Ambience Layout</Text>
             <Imagelist ambience />
-          </View>
+          </View> */}
           <View style={{ width: "80%", flexDirection: "row" }}>
-            <TouchableWithoutFeedback onPress={() => setPage(1)}>
-              <View style={{ flexGrow: 1, marginRight: 5 }}>
-                <UserInputButton
-                  color={colorScheme.primary}
-                  location="center"
-                  text="back"
-                />
-              </View>
-            </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => setPage(0)}>
               <View style={{ flexGrow: 1, marginRight: 5 }}>
                 <UserInputButton
