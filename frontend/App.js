@@ -33,14 +33,13 @@ export default function App() {
       value={{ user, setUser, owner, setOwner, restaurant, setRestaurant }}
     >
       <NavigationContainer>
-        <OwnerRegisterStack />
-        {/* {!user ? (
+        {!user ? (
           <AuthStackNavigator />
         ) : owner ? (
           <OwnerRegisterStack />
         ) : (
           <TabStackNavigator />
-        )} */}
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

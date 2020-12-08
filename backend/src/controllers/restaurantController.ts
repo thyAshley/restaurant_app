@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import Restaurant from "../models/restaurantModel";
 
 export const getRestaurantByUser = async (req: Request, res: Response) => {
+  console.log("here");
   const { userId } = req.params;
   try {
     const response = await Restaurant.findOne({ owner: userId });
@@ -24,18 +25,11 @@ export const createRestaurantByUser = async (req: Request, res: Response) => {
     ambience,
     menu,
   } = req.body;
-  if (
-    !name ||
-    !location ||
-    !cuisine ||
-    !capacity ||
-    !openingHours ||
-    !ambience ||
-    !menu
-  ) {
+  if (!name || !location || !cuisine || !capacity || !openingHours || !menu) {
     return res.status(400).send({ message: "Not filled in" });
   }
   try {
+    console.log("here");
     const token = req.headers?.authorization?.split(" ")[1];
     if (!token) {
       return res.status(400).send({ message: "Unauthorized" });
@@ -47,7 +41,7 @@ export const createRestaurantByUser = async (req: Request, res: Response) => {
       cuisine,
       pax: capacity,
       openingHours,
-      ambience,
+      ambience: ambience || false,
       menu,
       owner: result.id,
     });

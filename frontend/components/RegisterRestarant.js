@@ -2,21 +2,158 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { TextInput, ScrollView } from "react-native-gesture-handler";
 
+import AuthStorage from "../auth/authstorage";
 import UserInputButton from "../components/UserInputButton";
+import { instance } from "../config/axios";
+import AuthContext from "../context/AuthContext";
 import colorScheme from "../util/color";
 
 export default function RegisterRestarant({ page, setPage }) {
   const [addMore, setAddMore] = useState(false);
   const [restaurantName, setRestaurantName] = useState("");
+  const [menu, setMenu] = useState([]);
+  const [menuOne, setmenuOne] = useState("");
+  const [menuOnePrice, setmenuOnePrice] = useState("");
+  const [menuTwo, setmenuTwo] = useState("");
+  const [menuTwoPrice, setmenuTwoPrice] = useState("");
+  const [menuThree, setmenuThree] = useState("");
+  const [menuThreePrice, setmenuThreePrice] = useState("");
+  const [menuFour, setmenuFour] = useState("");
+  const [menuFourPrice, setmenuFourPrice] = useState("");
+  const [menuFive, setmenuFive] = useState("");
+  const [menuFivePrice, setmenuFivePrice] = useState("");
+
+  const [restaurantError, setrestaurantError] = useState("");
   const [address, setAddress] = useState("");
+  const [addressError, setaddressError] = useState("");
   const [cuisine, setCuisine] = useState("");
+  const [cuisineError, setcuisineError] = useState("");
   const [pax, setPax] = useState("");
+  const [paxError, setpaxError] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [startTimeError, setstartTimeError] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [endTimeError, setendTimeError] = useState("");
   const [ambience, setAmbience] = useState(false);
+  const [errors, setErrors] = useState("initial");
 
   const firstPageHandler = () => {
-    setPage(1);
+    setErrors(false);
+    setrestaurantError("");
+    setaddressError("");
+    setcuisineError("");
+    setpaxError("");
+    setstartTimeError("");
+    setendTimeError("");
+    const validpax = Number(pax);
+    const validstart = Number(startTime);
+    const validstop = Number(endTime);
+    if (!restaurantName) {
+      setErrors(true);
+      setrestaurantError("invalid restaurant name");
+    }
+    if (!address) {
+      setErrors(true);
+      setaddressError("invalid address given");
+    }
+    if (!cuisine) {
+      setErrors(true);
+      setcuisineError("invalid cuisine given");
+    }
+    if (!validpax || validpax > 5 || validpax < 1) {
+      setErrors(true);
+      setpaxError("invalid capacity");
+    }
+    if (!validstart || validstart > 24 || validstart < 0) {
+      setErrors(true);
+      setstartTimeError("invalid start time");
+    }
+    if (!validstop || validstop > 24 || validstop < 0) {
+      setErrors(true);
+      setendTimeError("invalid stop time");
+    }
+    if (!errors) {
+      setPage(1);
+    }
+  };
+
+  const secondPageHandler = async () => {
+    if (menuOne) {
+      setMenu([
+        ...menu,
+        {
+          name: menuOne,
+          price: menuOnePrice,
+        },
+      ]);
+    }
+    if (menuTwo) {
+      setMenu([
+        ...menu,
+        {
+          name: menuTwo,
+          price: menuTwoPrice,
+        },
+      ]);
+    }
+    if (menuThree) {
+      setMenu([
+        ...menu,
+        {
+          name: menuThree,
+          price: menuThreePrice,
+        },
+      ]);
+    }
+    if (menuFour) {
+      setMenu([
+        ...menu,
+        {
+          name: menuFour,
+          price: menuFourPrice,
+        },
+      ]);
+    }
+    if (menuFive) {
+      setMenu([
+        ...menu,
+        {
+          name: menuFive,
+          price: menuFivePrice,
+        },
+      ]);
+    }
+
+    const token = await AuthStorage.getToken();
+    const id = await AuthStorage.getUser().id;
+    try {
+      const response = await instance.post(
+        "/v1/api/restaurant",
+        {
+          name: restaurantName,
+          location: address,
+          cuisine: cuisine,
+          capacity: pax,
+          openingHours: {
+            startTime: startTime,
+            stopTime: endTime,
+          },
+          ambience,
+          menu,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.message === "success") {
+        console.log(response.data.message);
+        setPage(2);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <Fragment>
@@ -33,6 +170,11 @@ export default function RegisterRestarant({ page, setPage }) {
                 value={restaurantName}
                 onChangeText={setRestaurantName}
               />
+              {restaurantError ? (
+                <Text style={styles.errorText}>{restaurantError}</Text>
+              ) : (
+                <Text style={styles.errorText} />
+              )}
             </View>
             <View>
               <Text style={styles.inputText}>Location</Text>
@@ -41,6 +183,11 @@ export default function RegisterRestarant({ page, setPage }) {
                 value={address}
                 onChangeText={setAddress}
               />
+              {addressError ? (
+                <Text style={styles.errorText}>{addressError}</Text>
+              ) : (
+                <Text style={styles.errorText} />
+              )}
             </View>
             <View
               style={{
@@ -55,6 +202,11 @@ export default function RegisterRestarant({ page, setPage }) {
                   value={cuisine}
                   onChangeText={setCuisine}
                 />
+                {cuisineError ? (
+                  <Text style={styles.errorText}>{cuisineError}</Text>
+                ) : (
+                  <Text style={styles.errorText} />
+                )}
               </View>
               <View style={{ flexGrow: 1 }}>
                 <Text style={styles.inputText}>Capacity</Text>
@@ -63,6 +215,11 @@ export default function RegisterRestarant({ page, setPage }) {
                   value={pax}
                   onChangeText={setPax}
                 />
+                {paxError ? (
+                  <Text style={styles.errorText}>{paxError}</Text>
+                ) : (
+                  <Text style={styles.errorText} />
+                )}
               </View>
             </View>
             <View
@@ -78,6 +235,11 @@ export default function RegisterRestarant({ page, setPage }) {
                   value={startTime}
                   onChangeText={setStartTime}
                 />
+                {startTimeError ? (
+                  <Text style={styles.errorText}>{startTimeError}</Text>
+                ) : (
+                  <Text style={styles.errorText} />
+                )}
               </View>
               <View style={{ flexGrow: 1 }}>
                 <Text style={styles.inputText}>End Time</Text>
@@ -86,6 +248,11 @@ export default function RegisterRestarant({ page, setPage }) {
                   value={endTime}
                   onChangeText={setEndTime}
                 />
+                {endTimeError ? (
+                  <Text style={styles.errorText}>{endTimeError}</Text>
+                ) : (
+                  <Text style={styles.errorText} />
+                )}
               </View>
             </View>
           </View>
@@ -139,32 +306,56 @@ export default function RegisterRestarant({ page, setPage }) {
             <View>
               <View>
                 <Text style={styles.inputText}>MENU LISTING 1</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuOne}
+                  value={menuOne}
+                />
               </View>
               <View>
                 <Text style={styles.inputText}>ITEM PRICING</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuOnePrice}
+                  value={menuOnePrice}
+                />
               </View>
             </View>
 
             <View>
               <View>
                 <Text style={styles.inputText}>MENU LISTING 2</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuTwo}
+                  value={menuTwo}
+                />
               </View>
               <View>
                 <Text style={styles.inputText}>ITEM PRICING</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuTwoPrice}
+                  value={menuTwoPrice}
+                />
               </View>
             </View>
             <View>
               <View>
                 <Text style={styles.inputText}>MENU LISTING 3</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuThree}
+                  value={menuThree}
+                />
               </View>
               <View>
                 <Text style={styles.inputText}>ITEM PRICING</Text>
-                <TextInput style={styles.inputField} />
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={setmenuThreePrice}
+                  value={menuThreePrice}
+                />
               </View>
             </View>
             {!addMore && (
@@ -190,21 +381,37 @@ export default function RegisterRestarant({ page, setPage }) {
                 <View>
                   <View>
                     <Text style={styles.inputText}>MENU LISTING 4</Text>
-                    <TextInput style={styles.inputField} />
+                    <TextInput
+                      style={styles.inputField}
+                      onChangeText={setmenuFour}
+                      value={menuFour}
+                    />
                   </View>
                   <View>
                     <Text style={styles.inputText}>ITEM PRICING</Text>
-                    <TextInput style={styles.inputField} />
+                    <TextInput
+                      style={styles.inputField}
+                      onChangeText={setmenuFourPrice}
+                      value={menuFourPrice}
+                    />
                   </View>
                 </View>
                 <View style={{ marginBottom: 40 }}>
                   <View>
                     <Text style={styles.inputText}>MENU LISTING 5</Text>
-                    <TextInput style={styles.inputField} />
+                    <TextInput
+                      style={styles.inputField}
+                      onChangeText={setmenuFive}
+                      value={menuFive}
+                    />
                   </View>
                   <View>
                     <Text style={styles.inputText}>ITEM PRICING</Text>
-                    <TextInput style={styles.inputField} />
+                    <TextInput
+                      style={styles.inputField}
+                      onChangeText={setmenuFivePrice}
+                      value={menuFivePrice}
+                    />
                   </View>
                 </View>
               </>
@@ -220,7 +427,7 @@ export default function RegisterRestarant({ page, setPage }) {
                 />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => setPage(2)}>
+            <TouchableWithoutFeedback onPress={secondPageHandler}>
               <View style={{ flexGrow: 1, marginLeft: 5 }}>
                 <UserInputButton
                   color={colorScheme.secondary}
@@ -293,5 +500,9 @@ const styles = StyleSheet.create({
     width: "30%",
     textAlign: "center",
     padding: 10,
+  },
+  errorText: {
+    color: colorScheme.secondary,
+    marginHorizontal: 20,
   },
 });
