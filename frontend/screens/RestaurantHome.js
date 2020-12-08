@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import Spinner from "../components/Spinner";
 import { instance } from "../config/axios";
 import AuthContext from "../context/AuthContext";
@@ -26,7 +26,13 @@ export default function RestaurantHome({ navigation }) {
       {loading && (
         <Spinner style={{ color: "black" }} color="black" size={80} />
       )}
-      <Text>Home</Text>
+      {!restaurant ? (
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("reg")}>
+          <Text>Register Your Restaurant now!</Text>
+        </TouchableWithoutFeedback>
+      ) : (
+        <Text>Home</Text>
+      )}
     </View>
   );
 }
