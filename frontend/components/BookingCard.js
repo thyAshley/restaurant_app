@@ -12,7 +12,7 @@ import { urlLink } from "../config/axios";
 import colorScheme from "../util/color";
 import moment from "moment";
 
-export default function BookingCard({ type, booking, cancel }) {
+export default function BookingCard({ type, booking, cancel, rest }) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -30,7 +30,7 @@ export default function BookingCard({ type, booking, cancel }) {
         <Text style={styles.text}>Time: {booking.time}</Text>
         <Text style={styles.text}>Number of Pax: {booking.numberOfPax}</Text>
       </View>
-      {type === "new" && (
+      {!rest && type === "new" && (
         <TouchableWithoutFeedback onPress={() => cancel(booking._id)}>
           <View style={styles.btnContainer}>
             <Text style={styles.newbtn}>Cancel</Text>

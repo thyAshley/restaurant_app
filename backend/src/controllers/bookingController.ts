@@ -79,3 +79,27 @@ export const removeBookingById = async (
     next(new Error("something went wrong, please try again"));
   }
 };
+
+export const getBookingByRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const restaurantId = req.params.restaurantId;
+  try {
+    const bookings = await Booking.find({ restaurantId })
+      .populate(
+        "restaurantId",
+        "name images address cuisine openingHours rating",
+        "Restaurant"
+      )
+      .sort({ date: "asc", time: "asc" })
+      .where("date")
+      .lt(Date.now());
+    res.status(200).json({ bookings });
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    next(new Error("something went wrong, please try again"));
+  }
+};
