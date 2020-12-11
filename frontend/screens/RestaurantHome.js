@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,7 +10,7 @@ import {
 } from "react-native";
 import BookingCard from "../components/BookingCard";
 import Spinner from "../components/Spinner";
-import { instance } from "../config/axios";
+import { instance, urlLink } from "../config/axios";
 import AuthContext from "../context/AuthContext";
 import colorScheme from "../util/color";
 
@@ -36,7 +37,6 @@ export default function RestaurantHome({ navigation }) {
     };
     getBookings();
   }, [restaurant]);
-
   return (
     <View style={styles.container}>
       {!restaurant ? (
@@ -67,7 +67,16 @@ export default function RestaurantHome({ navigation }) {
                 <Text style={styles.regButton}>Upload Image</Text>
               </TouchableWithoutFeedback>
             </View>
-          ) : null}
+          ) : (
+            <View>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: `${urlLink.url}/restaurants/${restaurant.images[0]}`,
+                }}
+              />
+            </View>
+          )}
 
           <Text
             style={{
@@ -120,5 +129,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: colorScheme.primary,
     color: colorScheme.white,
+  },
+  image: {
+    height: 200,
+    resizeMode: "stretch",
+    margin: 5,
+    width: "100%",
   },
 });

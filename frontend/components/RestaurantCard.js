@@ -14,7 +14,7 @@ import { urlLink } from "../config/axios";
 
 export default function RestaurantCard({ restaurant, setBook }) {
   const navigation = useNavigation();
-  const imageFile = `${urlLink.url}/restaurant/${restaurant.images[0]}`;
+  const imageFile = `${urlLink.url}/restaurants/${restaurant.images[0]}`;
   return (
     restaurant && (
       <TouchableWithoutFeedback

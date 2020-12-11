@@ -19,7 +19,7 @@ export default function BookingCard({ type, booking, cancel, rest }) {
       <Image
         style={styles.image}
         source={{
-          uri: `${urlLink.url}/restaurant/${booking.restaurantId.images[0]}`,
+          uri: `${urlLink.url}/restaurants/${booking.restaurantId.images[0]}`,
         }}
       />
       <View style={styles.textContainer}>
