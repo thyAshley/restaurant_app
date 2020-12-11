@@ -31,6 +31,7 @@ router.post(
           const error = new Error("Please upload a file");
           return next(error);
         }
+        console.log(file);
         if (file[0] && restaurant && restaurant.images && restaurant.images[0])
           fs.unlinkSync(
             path.join(

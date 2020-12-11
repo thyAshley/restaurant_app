@@ -41,7 +41,6 @@ export default function Login({ navigation }) {
       });
       if (result.data) {
         await login(result.data.token);
-        setLoading(false);
       }
     } catch (error) {
       setError("failed to login");

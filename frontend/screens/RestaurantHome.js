@@ -62,7 +62,7 @@ export default function RestaurantHome({ navigation }) {
                 restaurant.
               </Text>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate("reg")}
+                onPress={() => navigation.navigate("addImage")}
               >
                 <Text style={styles.regButton}>Upload Image</Text>
               </TouchableWithoutFeedback>

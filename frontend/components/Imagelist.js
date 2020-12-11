@@ -34,10 +34,9 @@ export default function Imagelist({ ambience, setImageUri, imageUri }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
+      setImageUri(result.uri);
     }
   };
 

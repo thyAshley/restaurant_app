@@ -13,6 +13,7 @@ import ReviewScreen from "../screens/ReviewScreen";
 import RegisterOption from "../screens/RegisterOption";
 import RestaurantHome from "../screens/RestaurantHome";
 import NewRestaurant from "../screens/NewRestaurant";
+import ImageScreen from "../screens/ImageScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -111,6 +112,13 @@ export const OwnerRegisterStack = () => {
       <OwnerReg.Screen
         name="reg"
         component={NewRestaurant}
+        options={{
+          headerLeft: null,
+        }}
+      />
+      <OwnerReg.Screen
+        name="addImage"
+        component={ImageScreen}
         options={{
           headerLeft: null,
         }}
