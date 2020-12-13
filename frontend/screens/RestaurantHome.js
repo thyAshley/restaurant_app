@@ -69,26 +69,49 @@ export default function RestaurantHome({ navigation }) {
               </TouchableWithoutFeedback>
             </View>
           ) : (
-            <View>
+            <View style={{ backgroundColor: 'white' }}>
               <Image
                 style={styles.image}
                 source={{
                   uri: `${urlLink.url}/restaurants/${restaurant.images[0]}`,
                 }}
               />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <View style={{ marginLeft: 10, padding: 10 }}>
+                  <Text style={styles.text}>{restaurant.name}</Text>
+                  <Text style={styles.text}>{restaurant.address}</Text>
+                  <Text style={styles.text}>{restaurant.cuisine}</Text>
+                </View>
+                <View style={{ marginRight: 10, padding: 10 }}>
+                  <Text style={styles.text}>
+                    {restaurant.openingHours.startTime}:00 -{' '}
+                    {restaurant.openingHours.stopTime}:00
+                  </Text>
+                  <Text style={styles.text}>
+                    {restaurant.ambience
+                      ? 'Ambience Seatings'
+                      : 'No Ambience Seating'}
+                  </Text>
+                </View>
+              </View>
             </View>
           )}
 
           <Text
             style={{
               color: colorScheme.primary,
-              fontSize: 20,
+              fontSize: 30,
               fontWeight: 'bold',
               margin: 15,
               marginTop: 30,
             }}
           >
-            Upcoming Restaurant Bookings
+            Restaurant Bookings
           </Text>
 
           <View>
@@ -108,6 +131,10 @@ export default function RestaurantHome({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  text: {
+    color: colorScheme.secondary,
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     margin: 20,
@@ -134,7 +161,9 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
     resizeMode: 'stretch',
-    margin: 5,
-    width: '100%',
+    margin: 10,
+    width: '90%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });

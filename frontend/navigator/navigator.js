@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-import Login from "../screens/Login";
-import Register from "../screens/Register";
-import Home from "../screens/Home";
-import colorScheme from "../util/color";
-import RestaurantScreen from "../screens/RestaurantScreen";
-import BookingScreen from "../screens/BookingScreen";
-import ReviewScreen from "../screens/ReviewScreen";
-import RegisterOption from "../screens/RegisterOption";
-import RestaurantHome from "../screens/RestaurantHome";
-import NewRestaurant from "../screens/NewRestaurant";
-import ImageScreen from "../screens/ImageScreen";
+import Login from '../screens/Login';
+import Register from '../screens/Register';
+import Home from '../screens/Home';
+import colorScheme from '../util/color';
+import RestaurantScreen from '../screens/RestaurantScreen';
+import BookingScreen from '../screens/BookingScreen';
+import ReviewScreen from '../screens/ReviewScreen';
+import RegisterOption from '../screens/RegisterOption';
+import RestaurantHome from '../screens/RestaurantHome';
+import NewRestaurant from '../screens/NewRestaurant';
+import ImageScreen from '../screens/ImageScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,8 +55,8 @@ export const AuthStackNavigator = () => {
         component={RegisterOption}
         options={{
           headerShown: true,
-          title: "New User Registration",
-          headerTitleAlign: "center",
+          title: 'New User Registration',
+          headerTitleAlign: 'center',
           headerTintColor: colorScheme.white,
           headerStyle: {
             backgroundColor: colorScheme.primary,
@@ -69,8 +69,8 @@ export const AuthStackNavigator = () => {
         component={Register}
         options={{
           headerShown: true,
-          title: "New Restaurant Registration",
-          headerTitleAlign: "center",
+          title: 'New Restaurant Registration',
+          headerTitleAlign: 'center',
           headerTintColor: colorScheme.white,
           headerStyle: {
             backgroundColor: colorScheme.primary,
@@ -83,8 +83,8 @@ export const AuthStackNavigator = () => {
         component={Register}
         options={{
           headerShown: true,
-          title: "New User",
-          headerTitleAlign: "center",
+          title: 'New User',
+          headerTitleAlign: 'center',
           headerTintColor: colorScheme.white,
           headerStyle: {
             backgroundColor: colorScheme.primary,
@@ -102,18 +102,23 @@ export const OwnerRegisterStack = () => {
       screenOptions={{
         headerShown: true,
         headerTintColor: colorScheme.white,
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerStyle: {
           backgroundColor: colorScheme.primary,
         },
       }}
     >
-      <OwnerReg.Screen name="homeStack" component={OwnerStackNavigator} />
+      <OwnerReg.Screen
+        name="homeStack"
+        component={OwnerStackNavigator}
+        options={{ headerTitle: 'Home' }}
+      />
       <OwnerReg.Screen
         name="reg"
         component={NewRestaurant}
         options={{
           headerLeft: null,
+          headerTitle: 'Register Restaurant',
         }}
       />
       <OwnerReg.Screen
@@ -121,6 +126,7 @@ export const OwnerRegisterStack = () => {
         component={ImageScreen}
         options={{
           headerLeft: null,
+          headerTitle: 'Add Images',
         }}
       />
     </OwnerReg.Navigator>
@@ -133,7 +139,7 @@ export const OwnerStackNavigator = () => {
       screenOptions={{
         headerShown: true,
         headerTintColor: colorScheme.white,
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerStyle: {
           backgroundColor: colorScheme.primary,
         },
@@ -150,7 +156,7 @@ export const BookingStackNavigator = ({ book, setBook }) => {
       screenOptions={{
         headerShown: true,
         headerTintColor: colorScheme.white,
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerStyle: {
           backgroundColor: colorScheme.primary,
         },
@@ -163,7 +169,7 @@ export const BookingStackNavigator = ({ book, setBook }) => {
       <Booking.Screen
         name="reviews"
         children={() => <ReviewScreen />}
-        options={{ headerTitle: "Reviews" }}
+        options={{ headerTitle: 'Reviews' }}
       />
     </Booking.Navigator>
   );
@@ -186,7 +192,7 @@ export const TabStackNavigator = () => {
         )}
         options={{
           tabBarVisible: hide ? false : true,
-          tabBarLabel: "Home",
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="home" size={24} color={color} />
           ),
@@ -198,7 +204,7 @@ export const TabStackNavigator = () => {
           <BookingStackNavigator setBook={setNewBook} book={newBook} />
         )}
         options={{
-          tabBarLabel: "Booking",
+          tabBarLabel: 'Booking',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="bookmark" size={24} color={color} />
           ),
@@ -208,7 +214,7 @@ export const TabStackNavigator = () => {
         name="account"
         component={Home}
         options={{
-          tabBarLabel: "Account",
+          tabBarLabel: 'Account',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user-alt" size={24} color={color} />
           ),
