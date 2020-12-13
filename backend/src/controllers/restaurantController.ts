@@ -1,17 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
-import Restaurant from "../models/restaurantModel";
+import Restaurant from '../models/restaurantModel';
 
 export const getRestaurantByUser = async (req: Request, res: Response) => {
-  console.log("here");
+  console.log('here');
   const { userId } = req.params;
   try {
     const response = await Restaurant.findOne({ owner: userId });
     console.log(response);
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).send("something went wrong");
+    res.status(500).send('something went wrong');
   }
 };
 
@@ -26,13 +26,13 @@ export const createRestaurantByUser = async (req: Request, res: Response) => {
     menu,
   } = req.body;
   if (!name || !location || !cuisine || !capacity || !openingHours || !menu) {
-    return res.status(400).send({ message: "Not filled in" });
+    return res.status(400).send({ message: 'Not filled in' });
   }
   try {
-    console.log("here");
-    const token = req.headers?.authorization?.split(" ")[1];
+    console.log('here');
+    const token = req.headers?.authorization?.split(' ')[1];
     if (!token) {
-      return res.status(400).send({ message: "Unauthorized" });
+      return res.status(400).send({ message: 'Unauthorized' });
     }
     const result: any = await jwt.verify(token, process.env.JWT_SECRET!);
     const response = new Restaurant({
@@ -46,25 +46,25 @@ export const createRestaurantByUser = async (req: Request, res: Response) => {
       owner: result.id,
     });
 
-    await response.save();
-    res.status(200).send({ message: "success" });
+    const createdRestaurant = await response.save();
+    res.status(200).send(createdRestaurant);
   } catch (error) {
-    if (error.message === "jwt malformed") {
-      return res.status(404).send({ message: "Unauthorized" });
+    if (error.message === 'jwt malformed') {
+      return res.status(404).send({ message: 'Unauthorized' });
     }
     console.log(error.message);
-    res.status(500).send({ message: "Unexpected error occur" });
+    res.status(500).send({ message: 'Unexpected error occur' });
   }
 };
 
 export const getRestaurant = async (req: Request, res: Response) => {
   let { limit } = req.query;
-  limit = limit || "20";
+  limit = limit || '20';
   try {
     let restaurants;
     restaurants = await Restaurant.find()
       .limit(+limit)
-      .sort({ createdAt: "desc" });
+      .sort({ createdAt: 'desc' });
 
     res.send(restaurants);
   } catch (error) {
@@ -75,7 +75,7 @@ export const getRestaurant = async (req: Request, res: Response) => {
 export const getRestaurantById = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { restaurantId } = req.params;
   try {
@@ -85,7 +85,7 @@ export const getRestaurantById = async (
       return res.send(restaurant);
     } else {
       res.status(404);
-      return next(new Error("No Restaurant Found"));
+      return next(new Error('No Restaurant Found'));
     }
   } catch (error) {
     console.log(error);

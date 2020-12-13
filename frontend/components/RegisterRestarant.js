@@ -1,76 +1,79 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from '@react-navigation/native';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
 
-import AuthStorage from "../auth/authstorage";
-import UserInputButton from "../components/UserInputButton";
-import { instance } from "../config/axios";
-import AuthContext from "../context/AuthContext";
-import colorScheme from "../util/color";
+import AuthStorage from '../auth/authstorage';
+import useAuth from '../auth/useAuth';
+import UserInputButton from '../components/UserInputButton';
+import { instance } from '../config/axios';
+import AuthContext from '../context/AuthContext';
+import colorScheme from '../util/color';
 
-export default function RegisterRestarant({ page, setPage }) {
+export default function RegisterRestarant({ page, setPage, navigation }) {
+  const { setRestaurant } = useContext(AuthContext);
   const [addMore, setAddMore] = useState(false);
-  const [restaurantName, setRestaurantName] = useState("");
+  const [restaurantName, setRestaurantName] = useState('');
   const [menu, setMenu] = useState([]);
-  const [menuOne, setmenuOne] = useState("");
-  const [menuOnePrice, setmenuOnePrice] = useState("");
-  const [menuTwo, setmenuTwo] = useState("");
-  const [menuTwoPrice, setmenuTwoPrice] = useState("");
-  const [menuThree, setmenuThree] = useState("");
-  const [menuThreePrice, setmenuThreePrice] = useState("");
-  const [menuFour, setmenuFour] = useState("");
-  const [menuFourPrice, setmenuFourPrice] = useState("");
-  const [menuFive, setmenuFive] = useState("");
-  const [menuFivePrice, setmenuFivePrice] = useState("");
+  const [menuOne, setmenuOne] = useState('');
+  const [menuOnePrice, setmenuOnePrice] = useState('');
+  const [menuTwo, setmenuTwo] = useState('');
+  const [menuTwoPrice, setmenuTwoPrice] = useState('');
+  const [menuThree, setmenuThree] = useState('');
+  const [menuThreePrice, setmenuThreePrice] = useState('');
+  const [menuFour, setmenuFour] = useState('');
+  const [menuFourPrice, setmenuFourPrice] = useState('');
+  const [menuFive, setmenuFive] = useState('');
+  const [menuFivePrice, setmenuFivePrice] = useState('');
 
-  const [restaurantError, setrestaurantError] = useState("");
-  const [address, setAddress] = useState("");
-  const [addressError, setaddressError] = useState("");
-  const [cuisine, setCuisine] = useState("");
-  const [cuisineError, setcuisineError] = useState("");
-  const [pax, setPax] = useState("");
-  const [paxError, setpaxError] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [startTimeError, setstartTimeError] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [endTimeError, setendTimeError] = useState("");
+  const [restaurantError, setrestaurantError] = useState('');
+  const [address, setAddress] = useState('');
+  const [addressError, setaddressError] = useState('');
+  const [cuisine, setCuisine] = useState('');
+  const [cuisineError, setcuisineError] = useState('');
+  const [pax, setPax] = useState('');
+  const [paxError, setpaxError] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [startTimeError, setstartTimeError] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [endTimeError, setendTimeError] = useState('');
   const [ambience, setAmbience] = useState(false);
-  const [errors, setErrors] = useState("initial");
+  const [errors, setErrors] = useState('initial');
 
   const firstPageHandler = () => {
     setErrors(false);
-    setrestaurantError("");
-    setaddressError("");
-    setcuisineError("");
-    setpaxError("");
-    setstartTimeError("");
-    setendTimeError("");
+    setrestaurantError('');
+    setaddressError('');
+    setcuisineError('');
+    setpaxError('');
+    setstartTimeError('');
+    setendTimeError('');
     const validpax = Number(pax);
     const validstart = Number(startTime);
     const validstop = Number(endTime);
     if (!restaurantName) {
       setErrors(true);
-      setrestaurantError("invalid restaurant name");
+      setrestaurantError('invalid restaurant name');
     }
     if (!address) {
       setErrors(true);
-      setaddressError("invalid address given");
+      setaddressError('invalid address given');
     }
     if (!cuisine) {
       setErrors(true);
-      setcuisineError("invalid cuisine given");
+      setcuisineError('invalid cuisine given');
     }
     if (!validpax || validpax > 5 || validpax < 1) {
       setErrors(true);
-      setpaxError("invalid capacity");
+      setpaxError('invalid capacity');
     }
     if (!validstart || validstart > 24 || validstart < 0) {
       setErrors(true);
-      setstartTimeError("invalid start time");
+      setstartTimeError('invalid start time');
     }
     if (!validstop || validstop > 24 || validstop < 0) {
       setErrors(true);
-      setendTimeError("invalid stop time");
+      setendTimeError('invalid stop time');
     }
     if (!errors) {
       setPage(1);
@@ -128,7 +131,7 @@ export default function RegisterRestarant({ page, setPage }) {
     const id = await AuthStorage.getUser().id;
     try {
       const response = await instance.post(
-        "/v1/api/restaurant",
+        '/v1/api/restaurant',
         {
           name: restaurantName,
           location: address,
@@ -145,10 +148,11 @@ export default function RegisterRestarant({ page, setPage }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
-      if (response.data.message === "success") {
-        setPage(2);
+      setRestaurant(response.data);
+      if (response.data) {
+        navigation.navigate('homeStack');
       }
     } catch (error) {
       console.log(error.message);
@@ -190,8 +194,8 @@ export default function RegisterRestarant({ page, setPage }) {
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-evenly",
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
               }}
             >
               <View style={{ flexGrow: 1 }}>
@@ -223,8 +227,8 @@ export default function RegisterRestarant({ page, setPage }) {
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-evenly",
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
               }}
             >
               <View style={{ flexGrow: 1 }}>
@@ -261,8 +265,8 @@ export default function RegisterRestarant({ page, setPage }) {
             </Text>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
+                flexDirection: 'row',
+                justifyContent: 'center',
                 marginBottom: 20,
               }}
             >
@@ -283,7 +287,7 @@ export default function RegisterRestarant({ page, setPage }) {
             </View>
           </View>
           <TouchableWithoutFeedback onPress={firstPageHandler}>
-            <View style={{ width: "80%" }}>
+            <View style={{ width: '80%' }}>
               <UserInputButton
                 color={colorScheme.secondary}
                 location="center"
@@ -362,13 +366,13 @@ export default function RegisterRestarant({ page, setPage }) {
                 <View
                   style={{
                     flex: 1,
-                    alignItems: "flex-end",
-                    width: "90%",
+                    alignItems: 'flex-end',
+                    width: '90%',
                     margin: 10,
                   }}
                 >
                   <Text
-                    style={{ color: colorScheme.secondary, fontWeight: "bold" }}
+                    style={{ color: colorScheme.secondary, fontWeight: 'bold' }}
                   >
                     Add More...
                   </Text>
@@ -416,7 +420,7 @@ export default function RegisterRestarant({ page, setPage }) {
               </>
             )}
           </ScrollView>
-          <View style={{ width: "80%", flexDirection: "row" }}>
+          <View style={{ width: '80%', flexDirection: 'row' }}>
             <TouchableWithoutFeedback onPress={() => setPage(0)}>
               <View style={{ flexGrow: 1, marginRight: 5 }}>
                 <UserInputButton
@@ -444,11 +448,11 @@ export default function RegisterRestarant({ page, setPage }) {
 const styles = StyleSheet.create({
   selected: {
     backgroundColor: colorScheme.primary,
-    color: "white",
+    color: 'white',
   },
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     margin: 20,
   },
   imageContainer: {
@@ -456,17 +460,17 @@ const styles = StyleSheet.create({
     borderColor: colorScheme.primary,
     borderWidth: 2,
     borderRadius: 25,
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 5,
     padding: 5,
-    width: "100%",
+    width: '100%',
   },
   inputContainer: {
     backgroundColor: colorScheme.background,
     borderRadius: 20,
     padding: 10,
     marginVertical: 30,
-    width: "90%",
+    width: '90%',
   },
   page2Input: {
     color: colorScheme.primary,
@@ -481,23 +485,23 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.white,
     borderColor: colorScheme.primary,
     borderRadius: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
     padding: 5,
     paddingHorizontal: 20,
-    width: "90%",
+    width: '90%',
   },
   inputText: {
     color: colorScheme.primary,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     padding: 10,
   },
   selectBtn: {
     borderColor: colorScheme.primary,
     borderWidth: 1,
-    color: "black",
-    width: "30%",
-    textAlign: "center",
+    color: 'black',
+    width: '30%',
+    textAlign: 'center',
     padding: 10,
   },
   errorText: {

@@ -1,5 +1,5 @@
-import mongoose, { Document } from "mongoose";
-import { IRestaurant } from "../types/models";
+import mongoose, { Document } from 'mongoose';
+import { IRestaurant } from '../types/models';
 
 interface IRestaurantDocument extends IRestaurant, Document {}
 
@@ -8,7 +8,7 @@ const restaurantSchema = new mongoose.Schema(
     _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     name: {
@@ -55,6 +55,9 @@ const restaurantSchema = new mongoose.Schema(
     ambience: {
       type: Boolean,
     },
+    ambienceSeats: {
+      type: [],
+    },
     menu: [
       {
         name: {
@@ -74,10 +77,10 @@ const restaurantSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model<IRestaurantDocument>(
-  "Restaurant",
-  restaurantSchema
+  'Restaurant',
+  restaurantSchema,
 );

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import moment from "moment";
-import { Picker } from "@react-native-community/picker";
+import React, { useState } from 'react';
+import moment from 'moment';
+import { Picker } from '@react-native-community/picker';
 import {
   StyleSheet,
   Text,
@@ -9,27 +9,28 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { AirbnbRating } from "react-native-ratings";
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { AirbnbRating } from 'react-native-ratings';
 
-import { instance } from "../config/axios";
-import authStorage from "../auth/authstorage";
-import UserInputButton from "../components/UserInputButton";
-import colorScheme from "../util/color";
-import { urlLink } from "../config/axios";
+import { instance } from '../config/axios';
+import authStorage from '../auth/authstorage';
+import UserInputButton from '../components/UserInputButton';
+import colorScheme from '../util/color';
+import { urlLink } from '../config/axios';
 
 export default function RestaurantScreen({ details, route, navigation }) {
   const { restaurant, setBook } = route.params;
   const [date, setDate] = useState(Date.now());
   const [time, setTime] = useState(Date.now());
   const [pax, setPax] = useState(1);
-  const [mode, setMode] = useState("date");
+  const [seat, setSeat] = useState(0);
+  const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
   const onChangeDate = (event, selectedDate) => {
-    setShow(Platform.OS === "ios");
-    if (mode === "date") {
+    setShow(Platform.OS === 'ios');
+    if (mode === 'date') {
       const currentDate = selectedDate || date;
       setDate(currentDate);
     } else {
@@ -43,39 +44,39 @@ export default function RestaurantScreen({ details, route, navigation }) {
       const bookings = await instance.post(
         `/v1/api/Booking/${restaurant._id}`,
         {
-          date: moment(date).format("yyyy-MM-DD"),
-          time: moment(time).format("HH:mm").toString(),
+          date: moment(date).format('yyyy-MM-DD'),
+          time: moment(time).format('HH:mm').toString(),
           numberOfPax: pax,
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       setBook(true);
-      navigation.navigate("mybooking");
+      navigation.navigate('mybooking');
     } catch (error) {
       console.error(error.message);
     }
   };
 
   const showMode = (currentMode) => {
-    if (currentMode === "date") {
+    if (currentMode === 'date') {
       setShow(true);
-      setMode("date");
+      setMode('date');
     } else {
       setShow(true);
-      setMode("time");
+      setMode('time');
     }
   };
 
   const showDatepicker = () => {
-    showMode("date");
+    showMode('date');
   };
 
   const showTimepicker = () => {
-    showMode("time");
+    showMode('time');
   };
 
   return (
@@ -107,7 +108,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
           <Text style={styles.text}>{restaurant.cuisine}</Text>
           <Text style={styles.text}>Rating: {restaurant.review.rating}</Text>
         </View>
-        <View style={{ position: "absolute", right: 10, top: 20 }}>
+        <View style={{ position: 'absolute', right: 10, top: 20 }}>
           <AirbnbRating
             showRating={false}
             isDisabled
@@ -133,12 +134,12 @@ export default function RestaurantScreen({ details, route, navigation }) {
             <Text style={styles.textHeader}>Dine in Booking</Text>
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: 'row',
               }}
             >
               <View style={{ margin: 10 }}>
                 <Text style={styles.bookingText}>
-                  Date: {moment(date).format("DD/MM/yyyy")}
+                  Date: {moment(date).format('DD/MM/yyyy')}
                 </Text>
                 <TouchableOpacity onPress={showDatepicker}>
                   <Text style={styles.btn}>Change Date</Text>
@@ -146,7 +147,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
               </View>
               <View style={{ margin: 10, marginHorizontal: 25 }}>
                 <Text style={styles.bookingText}>
-                  Time: {moment(time).format("hh:mm A")}
+                  Time: {moment(time).format('hh:mm A')}
                 </Text>
                 <TouchableOpacity onPress={showTimepicker}>
                   <Text style={styles.btn}>Change Time</Text>
@@ -157,8 +158,8 @@ export default function RestaurantScreen({ details, route, navigation }) {
         </View>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginHorizontal: 15,
           }}
         >
@@ -168,10 +169,10 @@ export default function RestaurantScreen({ details, route, navigation }) {
             selectedValue={pax}
             mode="dropdown"
             style={{
-              position: "absolute",
+              position: 'absolute',
               right: 0,
               marginLeft: 20,
-              width: "50%",
+              width: '50%',
             }}
           >
             <Picker.Item label="1" value="1" />
@@ -183,29 +184,34 @@ export default function RestaurantScreen({ details, route, navigation }) {
         </View>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginHorizontal: 15,
           }}
         >
-          <Text style={styles.text}>Choice of Seatings</Text>
-          <Picker
-            onValueChange={(itemValue) => setPax(itemValue)}
-            selectedValue={pax}
-            mode="dropdown"
-            style={{
-              position: "absolute",
-              right: 0,
-              marginLeft: 20,
-              width: "50%",
-            }}
-          >
-            <Picker.Item label="1" value="1" />
-            <Picker.Item label="2" value="2" />
-            <Picker.Item label="3" value="3" />
-            <Picker.Item label="4" value="4" />
-            <Picker.Item label="5" value="5" />
-          </Picker>
+          {restaurant.ambience && (
+            <>
+              <Text style={styles.text}>Choice of Seatings</Text>
+
+              <Picker
+                onValueChange={(itemValue) => setSeat(itemValue)}
+                selectedValue={seat}
+                mode="dropdown"
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginLeft: 20,
+                  width: '50%',
+                }}
+              >
+                <Picker.Item label="1" value="1" />
+                <Picker.Item label="2" value="2" />
+                <Picker.Item label="3" value="3" />
+                <Picker.Item label="4" value="4" />
+                <Picker.Item label="5" value="5" />
+              </Picker>
+            </>
+          )}
         </View>
       </View>
 
@@ -215,8 +221,8 @@ export default function RestaurantScreen({ details, route, navigation }) {
           margin: 10,
           padding: 10,
           borderRadius: 20,
-          flexDirection: "row",
-          justifyContent: "space-around",
+          flexDirection: 'row',
+          justifyContent: 'space-around',
         }}
       >
         <View>
@@ -224,7 +230,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
             style={{
               color: colorScheme.secondary,
               fontSize: 16,
-              fontWeight: "bold",
+              fontWeight: 'bold',
             }}
           >
             Menu Highlights
@@ -236,7 +242,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
             style={{
               color: colorScheme.secondary,
               fontSize: 16,
-              fontWeight: "bold",
+              fontWeight: 'bold',
             }}
           >
             Price
@@ -264,14 +270,14 @@ export default function RestaurantScreen({ details, route, navigation }) {
 
 const styles = StyleSheet.create({
   booking: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   bookingText: {
     color: colorScheme.secondary,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   btn: {
     backgroundColor: colorScheme.secondary,
@@ -279,7 +285,7 @@ const styles = StyleSheet.create({
     color: colorScheme.white,
     margin: 5,
     padding: 5,
-    textAlign: "center",
+    textAlign: 'center',
     width: 120,
   },
   container: {
@@ -288,13 +294,13 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 200,
-    width: Dimensions.get("window").width,
-    resizeMode: "stretch",
+    width: Dimensions.get('window').width,
+    resizeMode: 'stretch',
   },
   whitebackground: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 5,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   text: {
     fontSize: 16,
@@ -303,6 +309,6 @@ const styles = StyleSheet.create({
   textHeader: {
     color: colorScheme.primary,
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

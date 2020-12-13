@@ -1,57 +1,99 @@
-import React, { useContext, useState } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 
-import Imagelist from "../components/Imagelist";
-import colorScheme from "../util/color";
-import UserInputButton from "../components/UserInputButton";
-import { instance } from "../config/axios";
-import AuthContext from "../context/AuthContext";
-import authStorage from "../auth/authstorage";
+import Imagelist from '../components/Imagelist';
+import colorScheme from '../util/color';
+import UserInputButton from '../components/UserInputButton';
+import { instance } from '../config/axios';
+import AuthContext from '../context/AuthContext';
+import authStorage from '../auth/authstorage';
 
 export default function ImageScreen({ navigation }) {
   const { restaurant, setRestaurant } = useContext(AuthContext);
   const token = authStorage.getToken();
-  const [imageUri, setImageUri] = useState("");
-  const [imageUri2, setImageUri2] = useState("");
-  const [imageUri3, setImageUri3] = useState("");
-  console.log(imageUri, imageUri2, imageUri3);
+  const [imageUri, setImageUri] = useState('');
+  const [imageUri2, setImageUri2] = useState('');
+  const [imageUri3, setImageUri3] = useState('');
+  const [ambienceUri, setambienceUri] = useState('');
+  const [ambienceUri2, setambienceUri2] = useState('');
+  const [ambienceUri3, setambienceUri3] = useState('');
 
   const addImages = async () => {
-    console.log(restaurant._id);
     const data = new FormData();
     if (imageUri) {
-      data.append("file", {
+      data.append('file', {
         name: `image 1`,
-        type: "image/jpeg",
+        type: 'image/jpeg',
         uri: imageUri,
       });
     }
     if (imageUri2) {
-      data.append("file", {
+      data.append('file', {
         name: `image 2`,
-        type: "image/jpeg",
+        type: 'image/jpeg',
         uri: imageUri2,
       });
     }
     if (imageUri3) {
-      data.append("file", {
+      data.append('file', {
         name: `image 3`,
-        type: "image/jpeg",
+        type: 'image/jpeg',
         uri: imageUri3,
       });
     }
 
-    const response = await instance.post(
+    response = await instance.post(
       `/v1/api/restaurant/${restaurant._id}/upload`,
       data,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
+    console.log('add image');
+  };
+  const addAmbience = async () => {
+    const ambienceData = new FormData();
+    if (ambienceUri) {
+      ambienceData.append('file', {
+        name: `image 1`,
+        type: 'image/jpeg',
+        uri: ambienceUri,
+      });
+    }
+    if (ambienceUri2) {
+      ambienceData.append('file', {
+        name: `image 2`,
+        type: 'image/jpeg',
+        uri: ambienceUri2,
+      });
+    }
+    if (ambienceUri3) {
+      ambienceData.append('file', {
+        name: `image 3`,
+        type: 'image/jpeg',
+        uri: ambienceUri3,
+      });
+    }
+
+    response = await instance.post(
+      `/v1/api/restaurant/${restaurant._id}/uploadambience`,
+      ambienceData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log('add ambience');
     setRestaurant(response.data);
-    navigation.navigate("homeStack");
+  };
+
+  const addimgToDB = async () => {
+    await addImages();
+    await addAmbience();
+    navigation.navigate('homeStack');
   };
 
   return (
@@ -68,12 +110,16 @@ export default function ImageScreen({ navigation }) {
         Kindly upload a copy of the restaurant layout for diners. Please ensure
         that the layout is clearly labelled for ease of referencing
       </Text>
-      {/* <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Ambience Layout</Text>
-            <Imagelist ambience />
-          </View> */}
-      <View style={{ width: "80%", flexDirection: "row", margin: 20 }}>
-        <TouchableWithoutFeedback onPress={addImages}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputText}>Ambience Layout</Text>
+        <View style={styles.imageContainer} horizontal>
+          <Imagelist setImageUri={setambienceUri} imageUri={ambienceUri} />
+          <Imagelist setImageUri={setambienceUri2} imageUri={ambienceUri2} />
+          <Imagelist setImageUri={setambienceUri3} imageUri={ambienceUri3} />
+        </View>
+      </View>
+      <View style={{ width: '80%', flexDirection: 'row', margin: 20 }}>
+        <TouchableWithoutFeedback onPress={addimgToDB}>
           <View style={{ flexGrow: 1, marginRight: 5 }}>
             <UserInputButton
               color={colorScheme.secondary}
@@ -90,29 +136,29 @@ export default function ImageScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     margin: 20,
   },
   imageContainer: {
     backgroundColor: colorScheme.white,
     borderColor: colorScheme.primary,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 25,
-    flexDirection: "row",
-    margin: 15,
+    flexDirection: 'row',
     padding: 5,
-    width: "100%",
+    width: '100%',
   },
   inputContainer: {
     backgroundColor: colorScheme.background,
     borderRadius: 20,
     padding: 10,
-    marginVertical: 30,
-    width: "90%",
+    marginVertical: 50,
+    width: '100%',
   },
   page2Input: {
     color: colorScheme.primary,
     fontSize: 16,
+    marginTop: 30,
     letterSpacing: 1,
   },
   input: {
@@ -123,23 +169,23 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.white,
     borderColor: colorScheme.primary,
     borderRadius: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
     padding: 5,
     paddingHorizontal: 20,
-    width: "90%",
+    width: '90%',
   },
   inputText: {
     color: colorScheme.primary,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     padding: 10,
   },
   selectBtn: {
     borderColor: colorScheme.primary,
     borderWidth: 1,
-    color: "black",
-    width: "30%",
-    textAlign: "center",
+    color: 'black',
+    width: '30%',
+    textAlign: 'center',
     padding: 10,
   },
 });

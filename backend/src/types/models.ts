@@ -33,6 +33,7 @@ export interface IRestaurant {
     count: number;
   };
   images?: string[];
+  ambienceSeats?: string[];
   menu: IMenu[];
   ambience: boolean;
   pax: number;
