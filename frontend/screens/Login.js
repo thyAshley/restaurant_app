@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -6,36 +6,29 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-} from "react-native";
-import { instance } from "../config/axios";
-import ErrorMessage from "../components/ErrorMessage";
-import UserInputBox from "../components/UserInputBox";
-import UserInputButton from "../components/UserInputButton";
-import colorScheme from "../util/color";
-import { authStorage } from "../auth/authstorage";
-import AuthContext from "../context/AuthContext";
-import useAuth from "../auth/useAuth";
+} from 'react-native';
+import { instance } from '../config/axios';
+import ErrorMessage from '../components/ErrorMessage';
+import UserInputBox from '../components/UserInputBox';
+import UserInputButton from '../components/UserInputButton';
+import colorScheme from '../util/color';
+import { authStorage } from '../auth/authstorage';
+import AuthContext from '../context/AuthContext';
+import useAuth from '../auth/useAuth';
 
 export default function Login({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const { login } = useAuth();
-
-  // const clearAll = async () => {
-  //   setEmail("");
-  //   setPassword("");
-  //   setLoading(false);
-  //   setError("");
-  // };
 
   const submitHandler = async () => {
     setLoading(true);
-    setError("");
+    setError('');
     try {
-      const result = await instance.post("/v1/api/login", {
+      const result = await instance.post('/v1/api/login', {
         email: email,
         password: password,
       });
@@ -43,7 +36,7 @@ export default function Login({ navigation }) {
         await login(result.data.token);
       }
     } catch (error) {
-      setError("failed to login");
+      setError('failed to login');
       setLoading(false);
     }
   };
@@ -82,8 +75,7 @@ export default function Login({ navigation }) {
         <Text style={styles.newAccount}>Don't have an account?</Text>
         <TouchableOpacity
           onPress={() => {
-            clearAll();
-            navigation.navigate("register");
+            navigation.navigate('register');
           }}
         >
           <UserInputButton
@@ -102,7 +94,7 @@ const styles = StyleSheet.create({
   appTitle: {
     color: colorScheme.primary,
     fontSize: 26,
-    textAlign: "center",
+    textAlign: 'center',
     marginVertical: 50,
   },
   container: {
@@ -111,13 +103,13 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: colorScheme.secondary,
-    textAlign: "center",
-    textDecorationLine: "underline",
+    textAlign: 'center',
+    textDecorationLine: 'underline',
     marginBottom: 30,
   },
   newAccount: {
     color: colorScheme.textLight,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 5,
   },
   secondaryContainer: {

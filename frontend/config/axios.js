@@ -1,9 +1,10 @@
-import Axios from "axios";
+import Axios from 'axios';
 
+const url = 'http://ace0ddd81b6e.ngrok.io';
 export const instance = Axios.create({
-  baseURL: "http://205db53cbb25.ngrok.io",
+  baseURL: url,
 });
 
 export const urlLink = {
-  url: "http://205db53cbb25.ngrok.io",
+  url: url,
 };

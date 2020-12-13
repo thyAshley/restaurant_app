@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import RegisterRestarant from "../components/RegisterRestarant";
+import RegisterRestarant from '../components/RegisterRestarant';
 
 export default function NewRestaurant() {
-  const [page, setPage] = useState(page);
+  const [page, setPage] = useState(0);
 
   return (
     <>

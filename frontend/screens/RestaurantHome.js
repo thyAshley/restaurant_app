@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -7,12 +7,12 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import BookingCard from "../components/BookingCard";
-import Spinner from "../components/Spinner";
-import { instance, urlLink } from "../config/axios";
-import AuthContext from "../context/AuthContext";
-import colorScheme from "../util/color";
+} from 'react-native';
+import BookingCard from '../components/BookingCard';
+import Spinner from '../components/Spinner';
+import { instance, urlLink } from '../config/axios';
+import AuthContext from '../context/AuthContext';
+import colorScheme from '../util/color';
 
 export default function RestaurantHome({ navigation }) {
   const { user, setRestaurant, restaurant } = useContext(AuthContext);
@@ -28,9 +28,9 @@ export default function RestaurantHome({ navigation }) {
 
   useEffect(() => {
     const getBookings = async () => {
-      if (restaurant._id) {
+      if (restaurant && restaurant._id) {
         const response = await instance.get(
-          `/v1/api/booking/${restaurant._id}`
+          `/v1/api/booking/${restaurant._id}`,
         );
         setBookings(response.data.bookings);
       }
@@ -42,14 +42,14 @@ export default function RestaurantHome({ navigation }) {
       {!restaurant ? (
         <View
           style={{
-            justifyContent: "center",
+            justifyContent: 'center',
             flex: 1,
           }}
         >
           <Text style={styles.missing}>
             We notice that you have not register your restaurant yet
           </Text>
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("reg")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('reg')}>
             <Text style={styles.regButton}>Register Your Restaurant now!</Text>
           </TouchableWithoutFeedback>
         </View>
@@ -62,7 +62,7 @@ export default function RestaurantHome({ navigation }) {
                 restaurant.
               </Text>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate("addImage")}
+                onPress={() => navigation.navigate('addImage')}
               >
                 <Text style={styles.regButton}>Upload Image</Text>
               </TouchableWithoutFeedback>
@@ -82,7 +82,7 @@ export default function RestaurantHome({ navigation }) {
             style={{
               color: colorScheme.primary,
               fontSize: 20,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               margin: 15,
               marginTop: 30,
             }}
@@ -118,22 +118,22 @@ const styles = StyleSheet.create({
     height: 400,
   },
   missing: {
-    textAlign: "center",
+    textAlign: 'center',
     color: colorScheme.primary,
     fontSize: 20,
     padding: 10,
     margin: 10,
   },
   regButton: {
-    alignSelf: "center",
+    alignSelf: 'center',
     padding: 20,
     backgroundColor: colorScheme.primary,
     color: colorScheme.white,
   },
   image: {
     height: 200,
-    resizeMode: "stretch",
+    resizeMode: 'stretch',
     margin: 5,
-    width: "100%",
+    width: '100%',
   },
 });
