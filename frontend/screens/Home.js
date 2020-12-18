@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { instance } from "../config/axios";
-import useAuth from "../auth/useAuth";
-import Card from "../components/Card";
-import SearchBar from "../components/SearchBar";
-import colorScheme from "../util/color";
-import authStorage from "../auth/authstorage";
-import ErrorModal from "../components/ErrorModal";
+import { instance } from '../config/axios';
+import useAuth from '../auth/useAuth';
+import Card from '../components/Card';
+import SearchBar from '../components/SearchBar';
+import colorScheme from '../util/color';
+import authStorage from '../auth/authstorage';
+import ErrorModal from '../components/ErrorModal';
 
 export default function Home({ hide, setBook }) {
   const { login, logout } = useAuth();
   const [newRestaurant, setNewRestaurant] = useState([]);
   const [recommendationRestaurant, setRecommendation] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
@@ -21,13 +21,13 @@ export default function Home({ hide, setBook }) {
       try {
         const token = await authStorage.getToken();
         const user = await instance.post(
-          "/v1/api/auth",
+          '/v1/api/auth',
           {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         return user;
       } catch (error) {
@@ -38,8 +38,8 @@ export default function Home({ hide, setBook }) {
     };
     const fetchRestaurant = async () => {
       try {
-        const restaurant = await instance.get("/v1/api/restaurant?limit=5");
-        const recommended = await instance.get("/v1/api/restaurant?limit=5");
+        const restaurant = await instance.get('/v1/api/restaurant?limit=5');
+        const recommended = await instance.get('/v1/api/restaurant?limit=5');
         setNewRestaurant(restaurant.data);
         setRecommendation(recommended.data);
       } catch (err) {
@@ -75,7 +75,6 @@ export default function Home({ hide, setBook }) {
           restaurant={recommendationRestaurant}
           setBook={setBook}
         />
-        <Button title="logout" onPress={logout} />
       </ScrollView>
     </View>
   );

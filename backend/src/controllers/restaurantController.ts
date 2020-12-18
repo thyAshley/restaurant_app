@@ -3,6 +3,29 @@ import jwt from 'jsonwebtoken';
 
 import Restaurant from '../models/restaurantModel';
 
+export const addAmbienceSeats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { seatings, ambience } = req.body;
+  const restaurantId = req.params.restaurantId;
+  console.log(restaurantId);
+  console.log(req.body, seatings, ambience);
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      return next(new Error('Invalid Restaurant ID, please try again'));
+    }
+    restaurant.ambienceSeating = seatings;
+    restaurant.ambience = true;
+    await restaurant.save();
+    return res.send('ok');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getRestaurantByUser = async (req: Request, res: Response) => {
   console.log('here');
   const { userId } = req.params;
@@ -11,7 +34,7 @@ export const getRestaurantByUser = async (req: Request, res: Response) => {
     console.log(response);
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).send('something went wrong');
+    res.status(500).send('something went wronfg');
   }
 };
 
@@ -29,7 +52,6 @@ export const createRestaurantByUser = async (req: Request, res: Response) => {
     return res.status(400).send({ message: 'Not filled in' });
   }
   try {
-    console.log('here');
     const token = req.headers?.authorization?.split(' ')[1];
     if (!token) {
       return res.status(400).send({ message: 'Unauthorized' });

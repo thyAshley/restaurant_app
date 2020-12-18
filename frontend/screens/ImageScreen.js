@@ -1,5 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Switch,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 
 import Imagelist from '../components/Imagelist';
 import colorScheme from '../util/color';
@@ -17,6 +25,17 @@ export default function ImageScreen({ navigation }) {
   const [ambienceUri, setambienceUri] = useState('');
   const [ambienceUri2, setambienceUri2] = useState('');
   const [ambienceUri3, setambienceUri3] = useState('');
+  const [ambience, setAmbience] = useState(false);
+  const [tableOne, settableOne] = useState('');
+  const [tableOnePax, settableOnePax] = useState('');
+  const [tableTwo, settableTwo] = useState('');
+  const [tableTwoPax, settableTwoPax] = useState('');
+  const [tableThree, settableThree] = useState('');
+  const [tableThreePax, settableThreePax] = useState('');
+  const [tableFour, settableFour] = useState('');
+  const [tableFourPax, settableFourPax] = useState('');
+  const [tableFive, settableFive] = useState('');
+  const [tableFivePax, settableFivePax] = useState('');
 
   const addImages = async () => {
     const data = new FormData();
@@ -51,7 +70,6 @@ export default function ImageScreen({ navigation }) {
         },
       },
     );
-    console.log('add image');
   };
   const addAmbience = async () => {
     const ambienceData = new FormData();
@@ -86,18 +104,63 @@ export default function ImageScreen({ navigation }) {
         },
       },
     );
-    console.log('add ambience');
     setRestaurant(response.data);
   };
 
   const addimgToDB = async () => {
     await addImages();
-    await addAmbience();
+    if (ambience) {
+      const seatings = [];
+      if (tableOne) {
+        seatings.push({
+          name: tableOne,
+          pax: tableOnePax,
+        });
+      }
+      if (tableTwo) {
+        seatings.push({
+          name: tableTwo,
+          pax: tableTwoPax,
+        });
+      }
+      if (tableThree) {
+        seatings.push({
+          name: tableThree,
+          pax: tableThreePax,
+        });
+      }
+      if (tableFour) {
+        seatings.push({
+          name: tableFour,
+          pax: tableFourPax,
+        });
+      }
+      if (tableFive) {
+        seatings.push({
+          name: tableFive,
+          pax: tableFivePax,
+        });
+      }
+      await addAmbience();
+      console.log(seatings);
+      await instance.post(
+        `/v1/api/restaurant/${restaurant._id}/ambience`,
+        {
+          seatings: seatings,
+          ambience: ambience,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    }
     navigation.navigate('homeStack');
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.page2Input}>
         Please provide us with the pictures of your restaurant ambience/food.
       </Text>
@@ -106,18 +169,240 @@ export default function ImageScreen({ navigation }) {
         <Imagelist setImageUri={setImageUri2} imageUri={imageUri2} />
         <Imagelist setImageUri={setImageUri3} imageUri={imageUri3} />
       </View>
-      <Text style={styles.page2Input}>
-        Kindly upload a copy of the restaurant layout for diners. Please ensure
-        that the layout is clearly labelled for ease of referencing
-      </Text>
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputText}>Ambience Layout</Text>
-        <View style={styles.imageContainer} horizontal>
-          <Imagelist setImageUri={setambienceUri} imageUri={ambienceUri} />
-          <Imagelist setImageUri={setambienceUri2} imageUri={ambienceUri2} />
-          <Imagelist setImageUri={setambienceUri3} imageUri={ambienceUri3} />
-        </View>
+      <View
+        style={{
+          width: '100%',
+          margin: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <Text
+          style={{
+            color: colorScheme.primary,
+            fontSize: 16,
+          }}
+        >
+          Does your restaurant have ambience seating?
+        </Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={ambience ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={setAmbience}
+          value={ambience}
+        />
       </View>
+      {ambience && (
+        <>
+          <Text style={styles.page2Input}>
+            Kindly upload a copy of the restaurant layout for diners. Please
+            ensure that the layout is clearly labelled for ease of referencing
+          </Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Ambience Layout</Text>
+            <View style={styles.imageContainer} horizontal>
+              <Imagelist setImageUri={setambienceUri} imageUri={ambienceUri} />
+              <Imagelist
+                setImageUri={setambienceUri2}
+                imageUri={ambienceUri2}
+              />
+              <Imagelist
+                setImageUri={setambienceUri3}
+                imageUri={ambienceUri3}
+              />
+            </View>
+            <View>
+              <Text style={styles.inputText}>Seats</Text>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Table</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableOne}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Capacity</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableOnePax}
+                  />
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Table</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableTwo}
+                    value={tableTwo}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Capacity</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableTwoPax}
+                    value={tableTwoPax}
+                  />
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Table</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableThree}
+                    value={tableThree}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Capacity</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableThreePax}
+                    value={tableThreePax}
+                  />
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Table</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableFour}
+                    value={tableFour}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Capacity</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableFourPax}
+                    value={tableFourPax}
+                  />
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Table</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableFive}
+                    value={tableFive}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>Capacity</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={settableFivePax}
+                    value={tableFivePax}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </>
+      )}
+
       <View style={{ width: '80%', flexDirection: 'row', margin: 20 }}>
         <TouchableWithoutFeedback onPress={addimgToDB}>
           <View style={{ flexGrow: 1, marginRight: 5 }}>
@@ -129,15 +414,24 @@ export default function ImageScreen({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  inputField: {
+    borderWidth: 1,
+    backgroundColor: colorScheme.white,
+    borderColor: colorScheme.primary,
+    borderRadius: 10,
+    alignSelf: 'center',
+    padding: 5,
+    paddingHorizontal: 20,
+    width: '90%',
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    margin: 20,
+    marginHorizontal: 20,
   },
   imageContainer: {
     backgroundColor: colorScheme.white,
@@ -152,13 +446,13 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.background,
     borderRadius: 20,
     padding: 10,
-    marginVertical: 50,
+    marginVertical: 10,
     width: '100%',
   },
   page2Input: {
     color: colorScheme.primary,
     fontSize: 16,
-    marginTop: 30,
+    marginTop: 10,
     letterSpacing: 1,
   },
   input: {
@@ -172,7 +466,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 5,
     paddingHorizontal: 20,
-    width: '90%',
+    marginLeft: 5,
+    width: '60%',
   },
   inputText: {
     color: colorScheme.primary,

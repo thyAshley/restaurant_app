@@ -34,6 +34,7 @@ export interface IRestaurant {
   };
   images?: string[];
   ambienceSeats?: string[];
+  ambienceSeating?: string[];
   menu: IMenu[];
   ambience: boolean;
   pax: number;

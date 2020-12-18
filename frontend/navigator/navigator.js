@@ -14,6 +14,7 @@ import RegisterOption from '../screens/RegisterOption';
 import RestaurantHome from '../screens/RestaurantHome';
 import NewRestaurant from '../screens/NewRestaurant';
 import ImageScreen from '../screens/ImageScreen';
+import AccountScreen from '../screens/AccountScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -146,7 +147,11 @@ export const OwnerStackNavigator = () => {
       }}
     >
       <Booking.Screen name="home" component={RestaurantHome} />
-      <Booking.Screen name="account" component={RestaurantHome} />
+      <Booking.Screen
+        name="account"
+        component={AccountScreen}
+        options={{ headerTitle: 'My Profile' }}
+      />
     </Owner.Navigator>
   );
 };
@@ -165,6 +170,7 @@ export const BookingStackNavigator = ({ book, setBook }) => {
       <Booking.Screen
         name="mybooking"
         children={() => <BookingScreen book={book} setBook={setBook} />}
+        options={{ headerTitle: 'My Bookings' }}
       />
       <Booking.Screen
         name="reviews"
@@ -212,7 +218,7 @@ export const TabStackNavigator = () => {
       />
       <Tab.Screen
         name="account"
-        component={Home}
+        component={AccountScreen}
         options={{
           tabBarLabel: 'Account',
           tabBarIcon: ({ color }) => (

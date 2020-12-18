@@ -58,6 +58,9 @@ const restaurantSchema = new mongoose.Schema(
     ambienceSeats: {
       type: [],
     },
+    ambienceSeating: {
+      type: [],
+    },
     menu: [
       {
         name: {

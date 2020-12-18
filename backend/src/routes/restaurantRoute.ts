@@ -8,6 +8,7 @@ import {
   getRestaurantById,
   getRestaurantByUser,
   createRestaurantByUser,
+  addAmbienceSeats,
 } from '../controllers/restaurantController';
 import uploadMiddleware from '../middleware/uploadMiddleware';
 
@@ -17,6 +18,8 @@ router.route('/').get(getRestaurant).post(createRestaurantByUser);
 
 router.get('/:restaurantId', getRestaurantById);
 router.get('/owner/:userId', getRestaurantByUser);
+
+router.post('/:restaurantId/ambience', addAmbienceSeats);
 
 router.post(
   '/:restaurantId/upload',

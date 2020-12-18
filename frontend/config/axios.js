@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const url = 'http://ace0ddd81b6e.ngrok.io';
+const url = 'http://9877a7f4b9c5.ngrok.io';
 export const instance = Axios.create({
   baseURL: url,
 });

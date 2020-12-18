@@ -37,7 +37,6 @@ export default function RegisterRestarant({ page, setPage, navigation }) {
   const [startTimeError, setstartTimeError] = useState('');
   const [endTime, setEndTime] = useState('');
   const [endTimeError, setendTimeError] = useState('');
-  const [ambience, setAmbience] = useState(false);
   const [errors, setErrors] = useState('initial');
 
   const firstPageHandler = () => {
@@ -141,7 +140,6 @@ export default function RegisterRestarant({ page, setPage, navigation }) {
             startTime: startTime,
             stopTime: endTime,
           },
-          ambience,
           menu,
         },
         {
@@ -259,33 +257,7 @@ export default function RegisterRestarant({ page, setPage, navigation }) {
               </View>
             </View>
           </View>
-          <View>
-            <Text style={styles.inputText}>
-              Does your restaurant have Ambience Setting?
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginBottom: 20,
-              }}
-            >
-              <TouchableWithoutFeedback onPress={() => setAmbience(true)}>
-                <Text
-                  style={[styles.selectBtn, ambience ? styles.selected : null]}
-                >
-                  Yes
-                </Text>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setAmbience(false)}>
-                <Text
-                  style={[styles.selectBtn, !ambience ? styles.selected : null]}
-                >
-                  No
-                </Text>
-              </TouchableWithoutFeedback>
-            </View>
-          </View>
+
           <TouchableWithoutFeedback onPress={firstPageHandler}>
             <View style={{ width: '80%' }}>
               <UserInputButton
