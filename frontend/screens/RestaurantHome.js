@@ -92,11 +92,6 @@ export default function RestaurantHome({ navigation }) {
                     {restaurant.openingHours.startTime}:00 -{' '}
                     {restaurant.openingHours.stopTime}:00
                   </Text>
-                  <Text style={styles.text}>
-                    {restaurant.ambience
-                      ? 'Ambience Seatings'
-                      : 'No Ambience Seating'}
-                  </Text>
                 </View>
               </View>
             </View>
