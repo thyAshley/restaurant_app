@@ -44,15 +44,18 @@ export default function RestaurantScreen({ details, route, navigation }) {
     errortemp = false;
     if (moment(time).hour() < restaurant.openingHours.startTime) {
       errortemp = true;
+      console.log('wrong start time');
     }
     if (
-      moment(time).hour() !== 0 &&
-      moment(time).hour() > restaurant.openingHours.stopTime
+      moment(date).date() === moment(Date.now()).date() &&
+      moment(time).hour() < moment(Date.now()).hour()
     ) {
       errortemp = true;
+      console.log('wrong time today');
     }
-    if (moment(Date.now()).hour() > moment(time).hour()) {
+    if (moment(time).hour() > restaurant.openingHours.stopTime) {
       errortemp = true;
+      console.log('wrong end time');
     }
     if (!errortemp) {
       setError(false);
@@ -72,7 +75,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
           },
         );
         setBook(true);
-        navigation.navigate('mybooking');
+        navigation.navigate('home');
       } catch (error) {
         console.error(error.message);
       }
