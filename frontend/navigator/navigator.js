@@ -39,11 +39,6 @@ export const RestaurantNavigator = ({ hide, setBook }) => {
         component={RestaurantScreen}
         options={({ route }) => ({ title: route.params.name })}
       />
-      <Restaurant.Screen
-        name="mybooking"
-        children={() => <BookingScreen book={book} setBook={setBook} />}
-        options={{ headerTitle: 'My Bookings' }}
-      />
     </Restaurant.Navigator>
   );
 };

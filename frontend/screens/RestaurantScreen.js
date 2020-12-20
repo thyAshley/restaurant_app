@@ -98,10 +98,13 @@ export default function RestaurantScreen({ details, route, navigation }) {
   const showTimepicker = () => {
     showMode('time');
   };
-  const allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
-    (arr) => arr !== null,
-  );
 
+  let allImages;
+  if (restaurant) {
+    allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
+      (arr) => arr !== null,
+    );
+  }
   return (
     <View style={styles.container}>
       <View>

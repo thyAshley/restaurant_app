@@ -38,10 +38,14 @@ export default function RestaurantHome({ navigation }) {
     };
     getBookings();
   }, [restaurant]);
-  const allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
-    (arr) => arr !== null,
-  );
-  console.log(allImages);
+
+  let allImages;
+  if (restaurant) {
+    allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
+      (arr) => arr !== null,
+    );
+  }
+
   return (
     <View style={styles.container}>
       {!restaurant ? (
