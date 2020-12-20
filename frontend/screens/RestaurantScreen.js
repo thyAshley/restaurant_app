@@ -79,6 +79,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
     showMode('time');
   };
 
+  console.log(restaurant);
   return (
     <View style={styles.container}>
       <View>
@@ -107,6 +108,11 @@ export default function RestaurantScreen({ details, route, navigation }) {
           <Text style={styles.text}>{restaurant.address}</Text>
           <Text style={styles.text}>{restaurant.cuisine}</Text>
           <Text style={styles.text}>Rating: {restaurant.review.rating}</Text>
+          <Text style={styles.text}>
+            Opening Hours:{' '}
+            {moment(restaurant.openingHours.startTime, ['h']).format('HH:mm')} -{' '}
+            {moment(restaurant.openingHours.stopTime, ['h']).format('HH:mm')}
+          </Text>
         </View>
         <View style={{ position: 'absolute', right: 10, top: 20 }}>
           <AirbnbRating
@@ -204,11 +210,15 @@ export default function RestaurantScreen({ details, route, navigation }) {
                   width: '50%',
                 }}
               >
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
-                <Picker.Item label="5" value="5" />
+                {restaurant.ambienceSeating.map((seats) => {
+                  return (
+                    <Picker.Item
+                      label={seats.name}
+                      key={seats.name}
+                      value="1"
+                    />
+                  );
+                })}
               </Picker>
             </>
           )}
@@ -235,7 +245,10 @@ export default function RestaurantScreen({ details, route, navigation }) {
           >
             Menu Highlights
           </Text>
-          <Text>Signature Beef Cheeseburger</Text>
+          {restaurant.menu &&
+            restaurant.menu.map((menu, idx) => {
+              return <Text key={idx}>{menu.name}</Text>;
+            })}
         </View>
         <View>
           <Text
@@ -247,7 +260,10 @@ export default function RestaurantScreen({ details, route, navigation }) {
           >
             Price
           </Text>
-          <Text>12</Text>
+          {restaurant.menu &&
+            restaurant.menu.map((menu, idx) => {
+              return <Text key={idx}>{menu.price}</Text>;
+            })}
         </View>
       </View>
       <TouchableOpacity onPress={makeBooking}>

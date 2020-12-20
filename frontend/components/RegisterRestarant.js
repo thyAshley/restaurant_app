@@ -10,6 +10,8 @@ import { instance } from '../config/axios';
 import AuthContext from '../context/AuthContext';
 import colorScheme from '../util/color';
 
+let tempmenu = [];
+
 export default function RegisterRestarant({ page, setPage, navigation }) {
   const { setRestaurant } = useContext(AuthContext);
   const [addMore, setAddMore] = useState(false);
@@ -79,53 +81,60 @@ export default function RegisterRestarant({ page, setPage, navigation }) {
     }
   };
 
-  const secondPageHandler = async () => {
+  const MenuHandler = () => {
+    tempmenu = [];
     if (menuOne) {
-      setMenu([
-        ...menu,
+      tempmenu = [
+        ...tempmenu,
         {
           name: menuOne,
           price: menuOnePrice,
         },
-      ]);
+      ];
     }
+    console.log(tempmenu);
     if (menuTwo) {
-      setMenu([
-        ...menu,
+      tempmenu = [
+        ...tempmenu,
         {
           name: menuTwo,
           price: menuTwoPrice,
         },
-      ]);
+      ];
     }
+    console.log(tempmenu);
     if (menuThree) {
-      setMenu([
-        ...menu,
+      tempmenu = [
+        ...tempmenu,
         {
           name: menuThree,
           price: menuThreePrice,
         },
-      ]);
+      ];
     }
+
     if (menuFour) {
-      setMenu([
-        ...menu,
+      tempmenu = [
+        ...tempmenu,
         {
           name: menuFour,
           price: menuFourPrice,
         },
-      ]);
+      ];
     }
     if (menuFive) {
-      setMenu([
-        ...menu,
+      tempmenu = [
+        ...tempmenu,
         {
           name: menuFive,
           price: menuFivePrice,
         },
-      ]);
+      ];
     }
+  };
 
+  const secondPageHandler = async () => {
+    MenuHandler();
     const token = await AuthStorage.getToken();
     const id = await AuthStorage.getUser().id;
     try {
@@ -140,7 +149,7 @@ export default function RegisterRestarant({ page, setPage, navigation }) {
             startTime: startTime,
             stopTime: endTime,
           },
-          menu,
+          menu: tempmenu,
         },
         {
           headers: {
