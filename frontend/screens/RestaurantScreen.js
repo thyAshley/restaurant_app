@@ -27,7 +27,9 @@ export default function RestaurantScreen({ details, route, navigation }) {
   const [seat, setSeat] = useState(0);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(false);
 
+  let errortemp = false;
   const onChangeDate = (event, selectedDate) => {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
@@ -39,25 +41,43 @@ export default function RestaurantScreen({ details, route, navigation }) {
     }
   };
   const makeBooking = async () => {
-    try {
-      const token = await authStorage.getToken();
-      const bookings = await instance.post(
-        `/v1/api/Booking/${restaurant._id}`,
-        {
-          date: moment(date).format('yyyy-MM-DD'),
-          time: moment(time).format('HH:mm').toString(),
-          numberOfPax: pax,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+    errortemp = false;
+    if (moment(time).hour() < restaurant.openingHours.startTime) {
+      errortemp = true;
+    }
+    if (
+      moment(time).hour() !== 0 &&
+      moment(time).hour() > restaurant.openingHours.stopTime
+    ) {
+      errortemp = true;
+    }
+    if (moment(Date.now()).hour() > moment(time).hour()) {
+      errortemp = true;
+    }
+    if (!errortemp) {
+      setError(false);
+      try {
+        const token = await authStorage.getToken();
+        const bookings = await instance.post(
+          `/v1/api/Booking/${restaurant._id}`,
+          {
+            date: moment(date).format('yyyy-MM-DD'),
+            time: moment(time).format('HH:mm').toString(),
+            numberOfPax: pax,
           },
-        },
-      );
-      setBook(true);
-      navigation.navigate('mybooking');
-    } catch (error) {
-      console.error(error.message);
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setBook(true);
+        navigation.navigate('mybooking');
+      } catch (error) {
+        console.error(error.message);
+      }
+    } else {
+      setError(true);
     }
   };
 
@@ -81,7 +101,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
   const allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
     (arr) => arr !== null,
   );
-  console.log(restaurant);
+
   return (
     <View style={styles.container}>
       <View>
@@ -268,6 +288,11 @@ export default function RestaurantScreen({ details, route, navigation }) {
             })}
         </View>
       </View>
+      {error && (
+        <Text style={{ textAlign: 'center', color: colorScheme.primary }}>
+          Invalid time and date input
+        </Text>
+      )}
       <TouchableOpacity onPress={makeBooking}>
         <UserInputButton text="Book now" location="center" />
       </TouchableOpacity>
