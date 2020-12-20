@@ -38,7 +38,10 @@ export default function RestaurantHome({ navigation }) {
     };
     getBookings();
   }, [restaurant]);
-
+  const allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
+    (arr) => arr !== null,
+  );
+  console.log(allImages);
   return (
     <View style={styles.container}>
       {!restaurant ? (
@@ -74,7 +77,7 @@ export default function RestaurantHome({ navigation }) {
               <View>
                 <FlatList
                   horizontal
-                  data={restaurant.images}
+                  data={allImages}
                   keyExtractor={(restaurant, idx) => idx.toString()}
                   renderItem={({ item }) => {
                     return (
@@ -122,16 +125,14 @@ export default function RestaurantHome({ navigation }) {
           >
             Restaurant Bookings
           </Text>
-
-          <View>
-            {bookings &&
-              bookings.map((booking) => {
-                return (
-                  <View key={booking._id}>
-                    <BookingCard type="new" booking={booking} rest={true} />
-                  </View>
-                );
-              })}
+          <View style={{ height: 250 }}>
+            <FlatList
+              data={bookings}
+              keyExtractor={(bookings) => bookings._id}
+              renderItem={({ item }) => {
+                return <BookingCard type="new" booking={item} rest={true} />;
+              }}
+            />
           </View>
         </View>
       )}
