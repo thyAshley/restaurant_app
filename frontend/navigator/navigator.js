@@ -146,11 +146,26 @@ export const OwnerStackNavigator = () => {
         },
       }}
     >
-      <Booking.Screen name="home" component={RestaurantHome} />
+      <Booking.Screen
+        name="home"
+        component={RestaurantHome}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="home" size={24} color={color} />
+          ),
+        }}
+      />
       <Booking.Screen
         name="account"
         component={AccountScreen}
-        options={{ headerTitle: 'My Profile' }}
+        options={{
+          headerTitle: 'My Profile',
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="user-alt" size={24} color={color} />
+          ),
+        }}
       />
     </Owner.Navigator>
   );

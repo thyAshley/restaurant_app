@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   ScrollView,
@@ -70,12 +71,25 @@ export default function RestaurantHome({ navigation }) {
             </View>
           ) : (
             <View style={{ backgroundColor: 'white' }}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: `${urlLink.url}/restaurants/${restaurant.images[0]}`,
-                }}
-              />
+              <View>
+                <FlatList
+                  horizontal
+                  data={restaurant.images}
+                  keyExtractor={(restaurant, idx) => idx.toString()}
+                  renderItem={({ item }) => {
+                    return (
+                      item && (
+                        <Image
+                          style={styles.image}
+                          source={{
+                            uri: `${urlLink.url}/restaurants/${item}`,
+                          }}
+                        />
+                      )
+                    );
+                  }}
+                />
+              </View>
               <View
                 style={{
                   flexDirection: 'row',
@@ -155,10 +169,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 200,
+    width: Dimensions.get('window').width,
     resizeMode: 'stretch',
-    margin: 10,
-    width: '90%',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
 });
