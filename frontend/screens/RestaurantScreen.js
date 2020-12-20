@@ -78,14 +78,16 @@ export default function RestaurantScreen({ details, route, navigation }) {
   const showTimepicker = () => {
     showMode('time');
   };
-
+  const allImages = [...restaurant.images, ...restaurant.ambienceSeats].filter(
+    (arr) => arr !== null,
+  );
   console.log(restaurant);
   return (
     <View style={styles.container}>
       <View>
         <FlatList
           horizontal
-          data={restaurant.images}
+          data={allImages}
           keyExtractor={(restaurant, idx) => idx.toString()}
           renderItem={({ item }) => {
             return (
