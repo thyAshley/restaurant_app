@@ -243,7 +243,7 @@ export default function RestaurantScreen({ details, route, navigation }) {
                     <Picker.Item
                       label={seats.name}
                       key={seats.name}
-                      value="1"
+                      value={seats.name}
                     />
                   );
                 })}
